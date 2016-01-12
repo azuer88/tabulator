@@ -2,6 +2,13 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import MaxValueValidator, MinValueValidator
+
+def weight_field():
+    return models.IntegerField(validators=[
+        MinValueValidator(1, "Can not be lesser than 1%"),
+        MaxValueValidator(100, "Can not be more than 100%")
+    ])
 
 
 # Create your models here.
@@ -16,7 +23,11 @@ class Event(models.Model):
 
 
 class Category(models.Model):
-    pass
+    name = models.CharField(max_length=60)
+    description = models.CharField(max_length=200)
+    sequence = models.IntegerField()
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    weight = weight_field()
 
 
 class Criterion(models.Model):
@@ -25,6 +36,7 @@ class Criterion(models.Model):
     description = models.CharField(max_length=200, blank=True, default='')
     sequence = models.IntegerField()
     catgegory = models.ForeignKey(Category, on_delete=models.CASCADE)
+    weight = weight_field()
 
     class Meta:
         ordering = ['sequence']
