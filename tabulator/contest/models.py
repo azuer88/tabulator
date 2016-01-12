@@ -28,7 +28,7 @@ class Category(models.Model):
     description = models.CharField(max_length=200)
     sequence = models.IntegerField()
     weight = weight_field()
-
+    visible = models.IntegerField(default=1)
     def __unicode__(self):
         return u"{}".format(self.name)
 
