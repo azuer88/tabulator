@@ -23,12 +23,20 @@ class Judge(models.Model):
     def __unicode__(self):
         return u"{}".format(self.name)
 
+
+class CategoryManager(models.Manager):
+    def get_queryset(self):
+        return super(CategoryManager, self).get_queryset().filter(visible_ne=0)
+
 class Category(models.Model):
     name = models.CharField(max_length=60)
     description = models.CharField(max_length=200)
     sequence = models.IntegerField()
     weight = weight_field()
     visible = models.IntegerField(default=1)
+
+    objects = CategoryManager()
+
     def __unicode__(self):
         return u"{}".format(self.name)
 
