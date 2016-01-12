@@ -10,6 +10,10 @@ def weight_field():
         MaxValueValidator(100, "Can not be more than 100%")
     ])
 
+GENDER_CHOICES = [
+    ('M', 'Male'),
+    ('F', 'Female'),
+]
 
 # Create your models here.
 class Judge(models.Model):
@@ -30,6 +34,7 @@ class Category(models.Model):
 
     class Meta:
         ordering = ['sequence']
+        verbose_name_plural = 'Categories'
 
 
 class Criterion(models.Model):
@@ -45,6 +50,7 @@ class Criterion(models.Model):
 
     class Meta:
         ordering = ['category', 'sequence']
+        verbose_name_plural = 'criteria'
 
 
 class Group(models.Model):
@@ -58,7 +64,7 @@ class Candidate(models.Model):
     name = models.CharField(max_length=60)
     number = models.IntegerField()
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
-
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     def __unicode__(self):
         return u"{}".format(self.name)
 
