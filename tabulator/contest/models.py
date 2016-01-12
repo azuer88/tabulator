@@ -17,16 +17,10 @@ class Judge(models.Model):
     name = models.CharField(max_length=60)
 
 
-class Event(models.Model):
-    name = models.CharField(max_length=60)
-    description = models.CharField(200)
-
-
 class Category(models.Model):
     name = models.CharField(max_length=60)
     description = models.CharField(max_length=200)
     sequence = models.IntegerField()
-    event = models.ForeignKey(Event, on_delete=models.CASCADE)
     weight = weight_field()
 
 
