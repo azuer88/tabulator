@@ -26,7 +26,7 @@ class Judge(models.Model):
 
 class CategoryManager(models.Manager):
     def get_queryset(self):
-        return super(CategoryManager, self).get_queryset().filter(visible_ne=0)
+        return super(CategoryManager, self).get_queryset().filter(visible__gt=0)
 
 class Category(models.Model):
     name = models.CharField(max_length=60)
@@ -35,7 +35,8 @@ class Category(models.Model):
     weight = weight_field()
     visible = models.IntegerField(default=1)
 
-    objects = CategoryManager()
+    objects = models.Manager()
+    visibles = CategoryManager()
 
     def __unicode__(self):
         return u"{}".format(self.name)
@@ -49,7 +50,6 @@ class Criterion(models.Model):
     short_name = models.CharField(max_length=10)
     name = models.CharField(max_length=60)
     description = models.CharField(max_length=200, blank=True, default='')
-    sequence = models.IntegerField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     weight = weight_field()
 
@@ -57,7 +57,7 @@ class Criterion(models.Model):
         return u"{}".format(self.name)
 
     class Meta:
-        ordering = ['category', 'sequence']
+        order_with_respect_to = 'category'
         verbose_name_plural = 'criteria'
 
 
