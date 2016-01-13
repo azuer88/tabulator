@@ -4,6 +4,7 @@ from django.views.generic import View
 
 # Create your views here.
 class ContestView(View):
+    template_name = "index.html"
     def get(self, request):
-        return render('index.html')
+        return render(request, self.template_name)
 
