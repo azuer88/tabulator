@@ -86,7 +86,11 @@ class Score(models.Model):
     score = models.IntegerField()
 
     def __unicode__(self):
-        return u"{}".format(self.score)
+        return u"{}({}) = {}".format(
+            self.candidate,
+            self.criterion,
+            self.score,
+        )
 
     class Meta:
         unique_together = [('candidate','criterion'),]
