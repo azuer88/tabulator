@@ -63,5 +63,6 @@ target/
 migrations/
 db.sqlite3
 
-tabulator/static/*
+/*/static/*
+!/*/*/static/*
 
