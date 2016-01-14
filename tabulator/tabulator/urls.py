@@ -21,7 +21,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 from tastypie.api import Api
 
-from contest.api import CategoryResource
+from contest.api import CategoryResource, CriterionResource
+from contest.api import CandidateResource, ScoreResource
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -32,9 +33,14 @@ urlpatterns.append(
 )
 
 # add resources' urls
-catres = CategoryResource()
+api = Api(api_name='v1')
+api.register(CategoryResource())
+api.register(CriterionResource())
+api.register(CandidateResource())
+api.register(ScoreResource())
+# catres = CategoryResource()
 urlpatterns.append(
-    url(r'^api/', include(catres.urls))
+    url(r'^api/', include(api.urls))
 )
 
 # serve static files during development
