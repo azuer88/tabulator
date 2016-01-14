@@ -4,10 +4,16 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 
-def weight_field():
-    return models.IntegerField(validators=[
+def weight_field(*args, **kwargs):
+    return models.IntegerField(args, kwargs, validators=[
         MinValueValidator(1, "Can not be lesser than 1%"),
         MaxValueValidator(100, "Can not be more than 100%")
+    ])
+
+def score_field(*args, **kwargs):
+    return models.IntegerField(args, kwargs, validators=[
+        MinValueValidator(0, "Can not be lesser than 0"),
+        MaxValueValidator(100, "Can not be more than 100")
     ])
 
 GENDER_CHOICES = [
@@ -83,7 +89,7 @@ class Candidate(models.Model):
 class Score(models.Model):
     candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
     criterion = models.ForeignKey(Criterion, on_delete=models.CASCADE)
-    score = models.IntegerField()
+    score = score_field()
 
     def __unicode__(self):
         return u"{}({}) = {}".format(

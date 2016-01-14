@@ -126,3 +126,4 @@ STATICFILES_DIRS = [
     #os.path.join(BASE_DIR, "static"),
 ]
 
+APP_TITLE = 'Tabulator v0.8a'
