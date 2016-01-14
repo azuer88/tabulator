@@ -3,6 +3,11 @@
     margin: 15px 0px 5px 0px;
 }
 
+.row {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
 .table-fixed thead {
   width: 97%;
 }
