@@ -19,11 +19,23 @@ from django.contrib import admin
 # serve static files during development
 from django.conf import settings
 from django.conf.urls.static import static
+from tastypie.api import Api
+
+from contest.api import CategoryResource
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+] 
 
 urlpatterns.append(
-    url(r'', include('contest.urls')),
+    url(r'^contest/', include('contest.urls')),
 )
+
+# add resources' urls
+catres = CategoryResource()
+urlpatterns.append(
+    url(r'^api/', include(catres.urls))
+)
+
+# serve static files during development
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
