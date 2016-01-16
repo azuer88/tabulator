@@ -1,3 +1,6 @@
+"""
+models.py
+"""
 from __future__ import unicode_literals
 
 from django.db import models
@@ -5,12 +8,18 @@ from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 def weight_field(*args, **kwargs):
+    """
+    retuns an IntegerField whose valid value is between 1 and 100
+    """
     return models.IntegerField(args, kwargs, validators=[
         MinValueValidator(1, "Can not be lesser than 1%"),
         MaxValueValidator(100, "Can not be more than 100%")
     ])
 
 def score_field(*args, **kwargs):
+    """
+    returns an IntegerField whose valid value is between 0 and 100
+    """
     return models.IntegerField(args, kwargs, validators=[
         MinValueValidator(0, "Can not be lesser than 0"),
         MaxValueValidator(100, "Can not be more than 100")
@@ -99,4 +108,4 @@ class Score(models.Model):
         )
 
     class Meta:
-        unique_together = [('candidate','criterion'),]
+        unique_together = [('candidate', 'criterion'),]
