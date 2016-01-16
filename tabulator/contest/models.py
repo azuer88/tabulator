@@ -7,28 +7,31 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 
+
 def weight_field(*args, **kwargs):
     """
     retuns an IntegerField whose valid value is between 1 and 100
     """
-    return models.IntegerField(args, kwargs, validators=[
+    return models.IntegerField(*args, validators=[
         MinValueValidator(1, "Can not be lesser than 1%"),
         MaxValueValidator(100, "Can not be more than 100%")
-    ])
+    ], **kwargs)
+
 
 def score_field(*args, **kwargs):
     """
     returns an IntegerField whose valid value is between 0 and 100
     """
-    return models.IntegerField(args, kwargs, validators=[
+    return models.IntegerField(*args, validators=[
         MinValueValidator(0, "Can not be lesser than 0"),
         MaxValueValidator(100, "Can not be more than 100")
-    ])
+    ], **kwargs)
 
 GENDER_CHOICES = [
     ('M', 'Male'),
     ('F', 'Female'),
 ]
+
 
 # Create your models here.
 class Judge(models.Model):
@@ -42,6 +45,7 @@ class Judge(models.Model):
 class CategoryManager(models.Manager):
     def get_queryset(self):
         return super(CategoryManager, self).get_queryset().filter(visible__gt=0)
+
 
 class Category(models.Model):
     name = models.CharField(max_length=60)
@@ -62,7 +66,7 @@ class Category(models.Model):
 
 
 class Criterion(models.Model):
-    short_name = models.CharField(max_length=10)
+    short_name = models.CharField(max_length=30)
     name = models.CharField(max_length=60)
     description = models.CharField(max_length=200, blank=True, default='')
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
@@ -83,13 +87,28 @@ class Group(models.Model):
         return u"{}".format(self.name)
 
 
+class FemaleCandidate(models.Manager):
+    def get_queryset(self):
+        return super(FemaleCandidate, self).get_queryset().filter(gender='F')
+
+
+class MaleCandidate(models.Manager):
+    def get_queryset(self):
+        return super(MaleCandidate, self).get_queryset().filter(gender='M')
+
+
 class Candidate(models.Model):
     name = models.CharField(max_length=60)
     number = models.IntegerField()
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
+
     def __unicode__(self):
         return u"{}".format(self.name)
+
+    objects = models.Manager()
+    males = MaleCandidate()
+    females = FemaleCandidate()
 
     class Meta:
         ordering = ['number']
@@ -98,7 +117,7 @@ class Candidate(models.Model):
 class Score(models.Model):
     candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
     criterion = models.ForeignKey(Criterion, on_delete=models.CASCADE)
-    score = score_field()
+    score = score_field(default=100)
 
     def __unicode__(self):
         return u"{}({}) = {}".format(
@@ -108,4 +127,16 @@ class Score(models.Model):
         )
 
     class Meta:
-        unique_together = [('candidate', 'criterion'),]
+        unique_together = [('candidate', 'criterion'), ]
+
+    # objects = models.Manager()
+
+
+def get_candidate_scores(candidate, category):
+    criteria = category.criterion_set.all()
+    scores = []
+    for criterion in criteria:
+        score = Score.objects.get_or_create(candidate=candidate,
+                                            criterion=criterion)
+        scores.append(score)
+    return scores
