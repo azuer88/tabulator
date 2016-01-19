@@ -89,12 +89,14 @@ class Group(models.Model):
 
 class FemaleCandidate(models.Manager):
     def get_queryset(self):
-        return super(FemaleCandidate, self).get_queryset().filter(gender='F')
+        return super(FemaleCandidate, self).get_queryset() \
+            .filter(gender='F', elimatedited=1)
 
 
 class MaleCandidate(models.Manager):
     def get_queryset(self):
-        return super(MaleCandidate, self).get_queryset().filter(gender='M')
+        return super(MaleCandidate, self).get_queryset() \
+            .filter(gender='M', eliminated=1)
 
 
 class Candidate(models.Model):
@@ -102,6 +104,7 @@ class Candidate(models.Model):
     number = models.IntegerField()
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
+    active = models.BooleanField(default=True)
 
     def __unicode__(self):
         return u"{}".format(self.name)
@@ -114,10 +117,11 @@ class Candidate(models.Model):
         ordering = ['number']
 
 
-class Score(models.Model):
+class ScoreCriterion(models.Model):
     candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
     criterion = models.ForeignKey(Criterion, on_delete=models.CASCADE)
     score = score_field(default=100)
+    weighted_score = models.DecimalField(max_digits=5, decimal_places=2)
 
     def __unicode__(self):
         return u"{}({}) = {}".format(
@@ -128,7 +132,7 @@ class Score(models.Model):
 
     class Meta:
         unique_together = [('candidate', 'criterion'), ]
-
+        verbose_name_plural = 'Criteria Scores'
     # objects = models.Manager()
 
 
@@ -136,7 +140,7 @@ def get_candidate_scores(candidate, category):
     criteria = category.criterion_set.all()
     scores = []
     for criterion in criteria:
-        score = Score.objects.get_or_create(candidate=candidate,
-                                            criterion=criterion)
+        score = ScoreCriterion.objects.get_or_create(candidate=candidate,
+                                                     criterion=criterion)
         scores.append(score)
     return scores
