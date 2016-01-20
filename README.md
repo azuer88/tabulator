@@ -16,5 +16,4 @@ Allows panel of judges to input contestant scores for automatic tabulation of wi
 
 4. Install the dependencies in the 'requirements.txt'
     ```pip install -r requirements.txt```
-
-
+   N.B.: make sure you install libxml2-dev, libxslt-dev, and python-dev
