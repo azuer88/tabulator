@@ -109,6 +109,10 @@ class Candidate(models.Model):
     number = models.PositiveIntegerField(default=0)
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
+
+    motto = models.CharField(max_length=200, blank=True, default='')
+    dream = models.CharField(max_length=200, blank=True, default='')
+
     active = models.BooleanField(default=True)
 
     def __unicode__(self):
