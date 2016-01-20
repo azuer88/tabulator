@@ -100,8 +100,13 @@ class MaleCandidate(models.Manager):
 
 
 class Candidate(models.Model):
-    name = models.CharField(max_length=60)
-    number = models.IntegerField()
+    name = models.CharField(max_length=100)
+    nickname = models.CharField(max_length=30, default='', blank=True)
+    age = models.PositiveIntegerField(default=19)
+    vital_statistics = models.CharField(max_length=30, default='', blank=True)
+    height = models.PositiveIntegerField(default=0)
+    weight = models.PositiveIntegerField(default=0)
+    number = models.PositiveIntegerField(default=0)
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     active = models.BooleanField(default=True)
