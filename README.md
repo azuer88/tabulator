@@ -25,12 +25,16 @@ Allows panel of judges to input contestant scores for automatic tabulation of wi
 
 5. create database
     ```
-    ./manage.py makemigrations
+    ./manage.py makemigrations 
     ./manage.py migrate
+    ./manage.py migrate contest
     ```
 
 
 6. create super user
     ```./manage.py createsuperuser```
 
+
+7. load fixtures, it seems initial_data is no longer automatically loaded.
+    ```./manage.py loaddata initial_data```
 
