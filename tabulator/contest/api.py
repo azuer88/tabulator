@@ -19,8 +19,6 @@ class CriterionResource(ModelResource):
 
 
 class CandidateResource(ModelResource):
-    criterion = fields.ForeignKey(CriterionResource, 'criterion')
-
     class Meta:
         queryset = Candidate.objects.all()
         resource_name = 'candidate'
