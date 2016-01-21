@@ -90,13 +90,13 @@ class Group(models.Model):
 class FemaleCandidate(models.Manager):
     def get_queryset(self):
         return super(FemaleCandidate, self).get_queryset() \
-            .filter(gender='F', elimatedited=1)
+            .filter(gender='F', active=True)
 
 
 class MaleCandidate(models.Manager):
     def get_queryset(self):
         return super(MaleCandidate, self).get_queryset() \
-            .filter(gender='M', eliminated=1)
+            .filter(gender='M', active=True)
 
 
 class Candidate(models.Model):
