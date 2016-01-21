@@ -25,6 +25,7 @@ class CandidateResource(ModelResource):
         filtering = {
             'id': ALL,
             'number': ALL,
+            'gender': ALL,
         }
 
 
