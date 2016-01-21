@@ -25,7 +25,7 @@ class ContestView(View):
 
 def index(request):
     #context = RequestContext(request)
-    template_name = "angularjs.html"
+    template_name = "bootstrap.html"
     category = Category.objects.first()
     criteria = category.criterion_set.all()
     candidates = Candidate.females.all()
