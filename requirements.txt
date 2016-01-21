@@ -1,7 +1,10 @@
-Django==1.9.1
+Django==1.8
 PyYAML==3.11
 argparse==1.2.1
+defusedxml==0.4.1
 django-angular==0.7.15
+django-crispy-admin==0.0.6
+django-crispy-forms==1.6.0
 django-tastypie==0.13.0
 lxml==3.5.0
 python-dateutil==2.4.2
