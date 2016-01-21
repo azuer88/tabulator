@@ -1,4 +1,4 @@
-from tastypie.resources import ModelResource
+from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from tastypie import fields
 from .models import Category, Criterion, Candidate, ScoreCriterion
 
@@ -22,6 +22,10 @@ class CandidateResource(ModelResource):
     class Meta:
         queryset = Candidate.objects.all()
         resource_name = 'candidate'
+        filtering = {
+            'id': ALL,
+            'number': ALL,
+        }
 
 
 class ScoreResource(ModelResource):
