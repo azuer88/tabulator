@@ -16,7 +16,9 @@
     <link href="{% static "bootstrap/css/bootstrap.min.css" %}" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="navbar.css" rel="stylesheet">
+    <link href="{% static "css/navbar.css" %}" rel="stylesheet">
+
+    <link href="{% static "css/grid.css" %}" rel="stylesheet">
 </head>
 
 <body>
@@ -70,6 +72,9 @@
             <a class="btn btn-lg btn-primary" href="../../components/#navbar" role="button">View navbar docs &raquo;</a>
         </p>
     </div>
+    <div class="info" id="stage">
+
+    </div>
 
 </div> <!-- /container -->
 
@@ -80,5 +85,13 @@
 <script src="{% static "bootstrap/js/jquery-2.2.0.js" %}"></script>
 <script>window.jQuery || document.write('<script src="{% static "bootstrap/js/jquery-2.2.0.js" %}"><\/script>')</script>
 <script src="{% static "bootstrap/js/bootstrap.min.js" %}"></script>
+<script src="{% static "js/contest.main.js" %}"></script>
+
+<!-- url: http://localhost:8000/api/v1/candidate/?number=1&gender=M -->
+<script type = "text/javascript" language = "javascript">
+        $(document).ready(function() {
+            $('#stage').load('http://localhost:8000/contest/candidate/4/');
+        });
+</script>
 </body>
 </html>
