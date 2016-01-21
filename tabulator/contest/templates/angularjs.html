@@ -2,7 +2,7 @@
 <html>
 {% load staticfiles %}
 <head>
-  <title>Simple Invoicing - Built with AngularJS</title>
+  <title>{{ app_title }}</title>
   <meta charset='utf-8'>
   <meta name="description" content="AngularJS and Angular Code Example for creating Invoices and Invoicing Application">
   <link rel="stylesheet" href="{% static "bootstrap/css/bootstrap.min.css" %}">
@@ -14,7 +14,7 @@
   <div class="container" width="800px" id="invoice" >
     <div class="row">
       <div class="col-xs-12 heading">
-        INVOICE
+        {{ app_title }}
       </div>
     </div>
     <div class="row branding">
