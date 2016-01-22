@@ -12,4 +12,13 @@ $(document).ready(function() {
     $("input[name='commit']").click(function() {
         formmodified = 0;
     });
+
+    $('a.candidate_link').click(function( eventObject ){
+        var elem = $( this );
+        eventObject.preventDefault();
+        $('#stage').load(elem.attr( "href" ));
+        console.log(elem.attr( "href" ));
+    });
+
+
 });

@@ -42,13 +42,16 @@ def index(request):
     template_name = "bootstrap.html"
     category = Category.objects.first()
     criteria = category.criterion_set.all()
-    candidates = Candidate.females.all()
+
+    male_ids = Candidate.males.order_by('number').values_list('id', 'number', flat=False)
+    female_ids = Candidate.females.order_by('number').values_list('id', 'number', flat=False)
 
     context = {
             'app_title': settings.APP_TITLE,
             'criteria': criteria,
             'category': category.name,
-            'candidates': candidates,
+            'males': male_ids,
+            'females': female_ids,
     }
 
     return render(request, template_name, context=context)
