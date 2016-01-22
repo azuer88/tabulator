@@ -32,6 +32,10 @@ GENDER_CHOICES = [
     ('F', 'Female'),
 ]
 
+def cm_to_feet_inches(cm):
+    whole_inches = int(round(cm * 0.39370079))
+    return (whole_inches / 12, whole_inches % 12)
+
 
 # Create your models here.
 class Judge(models.Model):
