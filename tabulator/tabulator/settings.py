@@ -130,3 +130,6 @@ STATICFILES_DIRS = [
 TASTYPIE_DEFAULT_FORMATS = ['json']
 
 APP_TITLE = 'Tabulator v0.8a'
+LOGIN_URL = '/contest/login/'
+LOGOUT_URL = '/contest/logout/'
+LOGIN_REDIRECT_URL = '/contest/'

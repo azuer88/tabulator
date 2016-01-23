@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.template import RequestContext
 from django.views.generic import View
@@ -37,6 +38,7 @@ def get_candidate(request, candidate_id):
     }
     return render(request, "candidate.html", context=context)
 
+@login_required
 def index(request):
     #context = RequestContext(request)
     template_name = "bootstrap.html"
@@ -55,4 +57,3 @@ def index(request):
     }
 
     return render(request, template_name, context=context)
-
