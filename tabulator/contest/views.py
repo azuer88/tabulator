@@ -1,9 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.template import RequestContext
 from django.views.generic import View
-from django.contrib.auth import logout
+from django.contrib.auth import logout, authenticate, login
 from django.core.urlresolvers import reverse
 
 from .models import Category, Criterion, Candidate, ScoreCriterion
@@ -47,8 +47,10 @@ def index(request):
     category = Category.objects.first()
     criteria = category.criterion_set.all()
 
+
     male_ids = Candidate.males.order_by('number').values_list('id', 'number', flat=False)
     female_ids = Candidate.females.order_by('number').values_list('id', 'number', flat=False)
+    first = femail_ids[0][0]
 
     context = {
             'app_title': settings.APP_TITLE,
@@ -56,6 +58,7 @@ def index(request):
             'category': category.name,
             'males': male_ids,
             'females': female_ids,
+            'first': first,
     }
 
     return render(request, template_name, context=context)
@@ -63,3 +66,33 @@ def index(request):
 def logout_view(request):
     logout(request)
     return redirect(reverse('contest-login'))
+
+def login_view(request):
+    logout(request)
+    if request.POST:
+        username = request.POST['user']
+        password = request.POST['pass']
+        next = request.POST.get('next', None)
+
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                return redirect(next)
+    else:
+        next = request.GET.get('next', None)
+        if next is None:
+            next = '/contest/'
+
+    context = {
+        'next': next,
+    }
+
+    return render(request, 'login.html', context=context)
+
+@login_required()
+def save_score(request):
+    result = {}
+    result['code'] = 200
+    result['message'] = 'OK'
+    return JsonResponse(result)

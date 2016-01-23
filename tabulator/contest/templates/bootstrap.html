@@ -100,7 +100,7 @@
 <!-- url: http://localhost:8000/api/v1/candidate/?number=1&gender=M -->
 <script type = "text/javascript" language = "javascript">
         $(document).ready(function() {
-            $('#jumbotron').load('http://localhost:8000/contest/candidate/4/');
+            $('#jumbotron').load('{% url "get-candidate" first %}');
         });
 </script>
 </body>
