@@ -90,9 +90,17 @@ def login_view(request):
 
     return render(request, 'login.html', context=context)
 
-@login_required()
-def save_score(request):
+@login_required
+def set_score(request):
     result = {}
     result['code'] = 200
     result['message'] = 'OK'
     return JsonResponse(result)
+
+@login_required
+def get_score(request):
+    result = {}
+    result['code'] = 200
+    result['message'] = 'OK'
+    return JsonResponse(result)
+

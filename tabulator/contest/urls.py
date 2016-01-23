@@ -8,5 +8,7 @@ urlpatterns = [
     #url(r'login/$', 'django.contrib.auth.views.login', name='contest-login'),
     url(r'login/$', 'contest.views.login_view', name='contest-login'),
     url(r'logout/$', 'contest.views.logout_view', name='contest-logout'),
+    url(r'setscore/$', 'contest.views.set_score', name='contest-score-set'),
+    url(r'getscore/$', 'contest.views.get_score', name='contest-score-get'),
     #url(r'', ContestView.as_view()),
 ]
