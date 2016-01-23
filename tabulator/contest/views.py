@@ -1,8 +1,10 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.template import RequestContext
 from django.views.generic import View
+from django.contrib.auth import logout
+from django.core.urlresolvers import reverse
 
 from .models import Category, Criterion, Candidate, ScoreCriterion
 from django.conf import settings
@@ -57,3 +59,7 @@ def index(request):
     }
 
     return render(request, template_name, context=context)
+
+def logout_view(request):
+    logout(request)
+    return redirect(reverse('contest-login'))
