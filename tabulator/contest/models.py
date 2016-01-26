@@ -2,14 +2,18 @@
 models.py
 """
 from __future__ import unicode_literals
+import decimal
 
 import logging
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
-from django.db.models import Sum
+from django.db.models import Sum  # , Value as V
+# from django.db.models.functions import Concat
+
 
 logger = logging.getLogger(__name__)
+decimal.getcontext().prec = 2
 
 
 def weight_field(*args, **kwargs):
@@ -182,12 +186,47 @@ def populate_candidate_scores_for_judge(candidate, judge):
     return all_scores
 
 
-def get_ranking_data(gender):
-    qry = ScoreCriterion.objects.filter(candidate__gender=gender) \
+def get_ranking_data(gender, phase):
+    qry = ScoreCriterion.objects.filter(candidate__gender=gender,
+                                        criterion__category__phase=phase) \
         .values('candidate', 'criterion__category', 'judge') \
         .annotate(score=Sum('weighted_score')) \
         .order_by('-score') \
-        .values('criterion__category__name', 'candidate__name',
-                'judge__first_name', 'score')
+        .values('criterion__category__name', 'candidate__name', 'score',
+                'judge__first_name', 'judge__last_name', 'judge__username')
+
     return qry
 
+
+# todo:  change this such that it will create ranking per judge
+def create_ranking(gender):
+
+    categories = Category.objects.filter(phase=1) \
+        .values_list("name", flat=True) \
+        .order_by('sequence')
+
+    ranks = []
+    mapping = {}
+    for k in categories:
+        ranks.append(
+            {'name': k,
+             'ranking': []}
+        )
+        mapping[k] = len(ranks) - 1
+
+    data = get_ranking_data(gender, 1)
+
+    for v in data:
+        criteria = v['criterion__category__name']
+        idx = mapping[criteria]
+
+        judge = "{} {}".format(v['judge__first_name'],
+                               v['judge__last_name'])
+        score = decimal.Decimal(v['score'])
+        name = v['candidate__name']
+
+        rec = {'judge': judge, 'name': name, 'score': score}
+
+        ranks[idx]['ranking'].append(rec)
+
+    return ranks
