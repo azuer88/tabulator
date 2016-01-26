@@ -1,0 +1,110 @@
+[
+{
+   "fields": {
+      "group": 6,
+      "name": "Female 1",
+      "weight": 0,
+      "nickname": "",
+      "age": 19,
+      "number": 1,
+      "height": 0,
+      "gender": "F",
+      "active": true,
+      "motto": "",
+      "vital_statistics": "",
+      "dream": ""
+   },
+   "model": "contest.candidate",
+   "pk": 10
+},
+{
+   "fields": {
+      "group": 7,
+      "name": "Female 2",
+      "weight": 0,
+      "nickname": "",
+      "age": 19,
+      "number": 2,
+      "height": 0,
+      "gender": "F",
+      "active": true,
+      "motto": "",
+      "vital_statistics": "",
+      "dream": ""
+   },
+   "model": "contest.candidate",
+   "pk": 11
+},
+{
+   "fields": {
+      "group": 8,
+      "name": "Female 3",
+      "weight": 0,
+      "nickname": "",
+      "age": 19,
+      "number": 3,
+      "height": 0,
+      "gender": "F",
+      "active": true,
+      "motto": "",
+      "vital_statistics": "",
+      "dream": ""
+   },
+   "model": "contest.candidate",
+   "pk": 12
+},
+{
+   "fields": {
+      "group": 6,
+      "name": "Male 1",
+      "weight": 0,
+      "nickname": "",
+      "age": 19,
+      "number": 1,
+      "height": 0,
+      "gender": "M",
+      "active": true,
+      "motto": "",
+      "vital_statistics": "",
+      "dream": ""
+   },
+   "model": "contest.candidate",
+   "pk": 13
+},
+{
+   "fields": {
+      "group": 7,
+      "name": "Male 2",
+      "weight": 0,
+      "nickname": "",
+      "age": 19,
+      "number": 2,
+      "height": 0,
+      "gender": "M",
+      "active": true,
+      "motto": "",
+      "vital_statistics": "",
+      "dream": ""
+   },
+   "model": "contest.candidate",
+   "pk": 14
+},
+{
+   "fields": {
+      "group": 8,
+      "name": "Male 3",
+      "weight": 0,
+      "nickname": "",
+      "age": 19,
+      "number": 3,
+      "height": 0,
+      "gender": "M",
+      "active": true,
+      "motto": "",
+      "vital_statistics": "",
+      "dream": ""
+   },
+   "model": "contest.candidate",
+   "pk": 15
+}
+]

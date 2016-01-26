@@ -1,0 +1,37 @@
+[
+{
+   "fields": {
+      "name": "CBME"
+   },
+   "model": "contest.group",
+   "pk": 6
+},
+{
+   "fields": {
+      "name": "CCJE"
+   },
+   "model": "contest.group",
+   "pk": 7
+},
+{
+   "fields": {
+      "name": "CICT"
+   },
+   "model": "contest.group",
+   "pk": 8
+},
+{
+   "fields": {
+      "name": "CNHS"
+   },
+   "model": "contest.group",
+   "pk": 9
+},
+{
+   "fields": {
+      "name": "CoED"
+   },
+   "model": "contest.group",
+   "pk": 10
+}
+]

@@ -1,0 +1,510 @@
+[
+{
+   "fields": {
+      "codename": "add_logentry",
+      "name": "Can add log entry",
+      "content_type": 16
+   },
+   "model": "auth.permission",
+   "pk": 46
+},
+{
+   "fields": {
+      "codename": "change_logentry",
+      "name": "Can change log entry",
+      "content_type": 16
+   },
+   "model": "auth.permission",
+   "pk": 47
+},
+{
+   "fields": {
+      "codename": "delete_logentry",
+      "name": "Can delete log entry",
+      "content_type": 16
+   },
+   "model": "auth.permission",
+   "pk": 48
+},
+{
+   "fields": {
+      "codename": "add_permission",
+      "name": "Can add permission",
+      "content_type": 17
+   },
+   "model": "auth.permission",
+   "pk": 49
+},
+{
+   "fields": {
+      "codename": "change_permission",
+      "name": "Can change permission",
+      "content_type": 17
+   },
+   "model": "auth.permission",
+   "pk": 50
+},
+{
+   "fields": {
+      "codename": "delete_permission",
+      "name": "Can delete permission",
+      "content_type": 17
+   },
+   "model": "auth.permission",
+   "pk": 51
+},
+{
+   "fields": {
+      "codename": "add_group",
+      "name": "Can add group",
+      "content_type": 18
+   },
+   "model": "auth.permission",
+   "pk": 52
+},
+{
+   "fields": {
+      "codename": "change_group",
+      "name": "Can change group",
+      "content_type": 18
+   },
+   "model": "auth.permission",
+   "pk": 53
+},
+{
+   "fields": {
+      "codename": "delete_group",
+      "name": "Can delete group",
+      "content_type": 18
+   },
+   "model": "auth.permission",
+   "pk": 54
+},
+{
+   "fields": {
+      "codename": "add_user",
+      "name": "Can add user",
+      "content_type": 19
+   },
+   "model": "auth.permission",
+   "pk": 55
+},
+{
+   "fields": {
+      "codename": "change_user",
+      "name": "Can change user",
+      "content_type": 19
+   },
+   "model": "auth.permission",
+   "pk": 56
+},
+{
+   "fields": {
+      "codename": "delete_user",
+      "name": "Can delete user",
+      "content_type": 19
+   },
+   "model": "auth.permission",
+   "pk": 57
+},
+{
+   "fields": {
+      "codename": "add_contenttype",
+      "name": "Can add content type",
+      "content_type": 20
+   },
+   "model": "auth.permission",
+   "pk": 58
+},
+{
+   "fields": {
+      "codename": "change_contenttype",
+      "name": "Can change content type",
+      "content_type": 20
+   },
+   "model": "auth.permission",
+   "pk": 59
+},
+{
+   "fields": {
+      "codename": "delete_contenttype",
+      "name": "Can delete content type",
+      "content_type": 20
+   },
+   "model": "auth.permission",
+   "pk": 60
+},
+{
+   "fields": {
+      "codename": "add_session",
+      "name": "Can add session",
+      "content_type": 21
+   },
+   "model": "auth.permission",
+   "pk": 61
+},
+{
+   "fields": {
+      "codename": "change_session",
+      "name": "Can change session",
+      "content_type": 21
+   },
+   "model": "auth.permission",
+   "pk": 62
+},
+{
+   "fields": {
+      "codename": "delete_session",
+      "name": "Can delete session",
+      "content_type": 21
+   },
+   "model": "auth.permission",
+   "pk": 63
+},
+{
+   "fields": {
+      "codename": "add_apiaccess",
+      "name": "Can add api access",
+      "content_type": 22
+   },
+   "model": "auth.permission",
+   "pk": 64
+},
+{
+   "fields": {
+      "codename": "change_apiaccess",
+      "name": "Can change api access",
+      "content_type": 22
+   },
+   "model": "auth.permission",
+   "pk": 65
+},
+{
+   "fields": {
+      "codename": "delete_apiaccess",
+      "name": "Can delete api access",
+      "content_type": 22
+   },
+   "model": "auth.permission",
+   "pk": 66
+},
+{
+   "fields": {
+      "codename": "add_apikey",
+      "name": "Can add api key",
+      "content_type": 23
+   },
+   "model": "auth.permission",
+   "pk": 67
+},
+{
+   "fields": {
+      "codename": "change_apikey",
+      "name": "Can change api key",
+      "content_type": 23
+   },
+   "model": "auth.permission",
+   "pk": 68
+},
+{
+   "fields": {
+      "codename": "delete_apikey",
+      "name": "Can delete api key",
+      "content_type": 23
+   },
+   "model": "auth.permission",
+   "pk": 69
+},
+{
+   "fields": {
+      "codename": "add_judge",
+      "name": "Can add judge",
+      "content_type": 24
+   },
+   "model": "auth.permission",
+   "pk": 70
+},
+{
+   "fields": {
+      "codename": "change_judge",
+      "name": "Can change judge",
+      "content_type": 24
+   },
+   "model": "auth.permission",
+   "pk": 71
+},
+{
+   "fields": {
+      "codename": "delete_judge",
+      "name": "Can delete judge",
+      "content_type": 24
+   },
+   "model": "auth.permission",
+   "pk": 72
+},
+{
+   "fields": {
+      "codename": "add_category",
+      "name": "Can add category",
+      "content_type": 25
+   },
+   "model": "auth.permission",
+   "pk": 73
+},
+{
+   "fields": {
+      "codename": "change_category",
+      "name": "Can change category",
+      "content_type": 25
+   },
+   "model": "auth.permission",
+   "pk": 74
+},
+{
+   "fields": {
+      "codename": "delete_category",
+      "name": "Can delete category",
+      "content_type": 25
+   },
+   "model": "auth.permission",
+   "pk": 75
+},
+{
+   "fields": {
+      "codename": "add_criterion",
+      "name": "Can add criterion",
+      "content_type": 26
+   },
+   "model": "auth.permission",
+   "pk": 76
+},
+{
+   "fields": {
+      "codename": "change_criterion",
+      "name": "Can change criterion",
+      "content_type": 26
+   },
+   "model": "auth.permission",
+   "pk": 77
+},
+{
+   "fields": {
+      "codename": "delete_criterion",
+      "name": "Can delete criterion",
+      "content_type": 26
+   },
+   "model": "auth.permission",
+   "pk": 78
+},
+{
+   "fields": {
+      "codename": "add_group",
+      "name": "Can add group",
+      "content_type": 27
+   },
+   "model": "auth.permission",
+   "pk": 79
+},
+{
+   "fields": {
+      "codename": "change_group",
+      "name": "Can change group",
+      "content_type": 27
+   },
+   "model": "auth.permission",
+   "pk": 80
+},
+{
+   "fields": {
+      "codename": "delete_group",
+      "name": "Can delete group",
+      "content_type": 27
+   },
+   "model": "auth.permission",
+   "pk": 81
+},
+{
+   "fields": {
+      "codename": "add_candidate",
+      "name": "Can add candidate",
+      "content_type": 28
+   },
+   "model": "auth.permission",
+   "pk": 82
+},
+{
+   "fields": {
+      "codename": "change_candidate",
+      "name": "Can change candidate",
+      "content_type": 28
+   },
+   "model": "auth.permission",
+   "pk": 83
+},
+{
+   "fields": {
+      "codename": "delete_candidate",
+      "name": "Can delete candidate",
+      "content_type": 28
+   },
+   "model": "auth.permission",
+   "pk": 84
+},
+{
+   "fields": {
+      "codename": "add_scorecriterion",
+      "name": "Can add score criterion",
+      "content_type": 29
+   },
+   "model": "auth.permission",
+   "pk": 85
+},
+{
+   "fields": {
+      "codename": "change_scorecriterion",
+      "name": "Can change score criterion",
+      "content_type": 29
+   },
+   "model": "auth.permission",
+   "pk": 86
+},
+{
+   "fields": {
+      "codename": "delete_scorecriterion",
+      "name": "Can delete score criterion",
+      "content_type": 29
+   },
+   "model": "auth.permission",
+   "pk": 87
+},
+{
+   "fields": {
+      "name": "Panel",
+      "permissions": [
+         85,
+         86,
+         87
+      ]
+   },
+   "model": "auth.group",
+   "pk": 2
+},
+{
+   "fields": {
+      "username": "admin",
+      "first_name": "",
+      "last_name": "",
+      "is_active": true,
+      "is_superuser": true,
+      "is_staff": true,
+      "last_login": "2016-01-26T00:42:19.783Z",
+      "groups": [],
+      "user_permissions": [],
+      "password": "pbkdf2_sha256$20000$YsEezuzdiF8o$i+slnEdt1UyOFaMTux4ml0ZFBqnDRSUc9llXsAX2LMw=",
+      "email": "blue.cuenca@gmail.com",
+      "date_joined": "2016-01-26T00:41:46.137Z"
+   },
+   "model": "auth.user",
+   "pk": 7
+},
+{
+   "fields": {
+      "username": "judge1",
+      "first_name": "Judge 1",
+      "last_name": "",
+      "is_active": true,
+      "is_superuser": false,
+      "is_staff": false,
+      "last_login": null,
+      "groups": [
+         2
+      ],
+      "user_permissions": [],
+      "password": "pbkdf2_sha256$20000$hY3CFmVQlJTT$cCMEcSEmrO6lDNQCeOuzA32AivXr4k8hAXiv1XGmPpA=",
+      "email": "",
+      "date_joined": "2016-01-26T00:45:45Z"
+   },
+   "model": "auth.user",
+   "pk": 8
+},
+{
+   "fields": {
+      "username": "judge2",
+      "first_name": "",
+      "last_name": "",
+      "is_active": true,
+      "is_superuser": false,
+      "is_staff": false,
+      "last_login": null,
+      "groups": [
+         2
+      ],
+      "user_permissions": [],
+      "password": "pbkdf2_sha256$20000$p8Wc1Pv6lYqO$ucp/AHzWSQETiMFhZkQEL7lEm8IbM+1nK8k4PdLIybk=",
+      "email": "",
+      "date_joined": "2016-01-26T00:47:41Z"
+   },
+   "model": "auth.user",
+   "pk": 9
+},
+{
+   "fields": {
+      "username": "judge3",
+      "first_name": "",
+      "last_name": "",
+      "is_active": true,
+      "is_superuser": false,
+      "is_staff": false,
+      "last_login": null,
+      "groups": [
+         2
+      ],
+      "user_permissions": [],
+      "password": "pbkdf2_sha256$20000$UTm3oJasD9ML$VlZbBe3WzeX+Q0i+Bk6X7OPK5iMdVjg6IUGpZtUXKso=",
+      "email": "",
+      "date_joined": "2016-01-26T00:47:50Z"
+   },
+   "model": "auth.user",
+   "pk": 10
+},
+{
+   "fields": {
+      "username": "judge4",
+      "first_name": "",
+      "last_name": "",
+      "is_active": true,
+      "is_superuser": false,
+      "is_staff": false,
+      "last_login": null,
+      "groups": [
+         2
+      ],
+      "user_permissions": [],
+      "password": "pbkdf2_sha256$20000$f6tBmEVt40UT$rauJBGcUgK+DI/TVB1OGCxbN/2bcaro+30TYgWk/Og8=",
+      "email": "",
+      "date_joined": "2016-01-26T00:48:22Z"
+   },
+   "model": "auth.user",
+   "pk": 11
+},
+{
+   "fields": {
+      "username": "judge5",
+      "first_name": "",
+      "last_name": "",
+      "is_active": true,
+      "is_superuser": false,
+      "is_staff": false,
+      "last_login": null,
+      "groups": [
+         2
+      ],
+      "user_permissions": [],
+      "password": "pbkdf2_sha256$20000$WMGevS1eLx9o$6VF80p8CU6SqycJM3zAWo1JMyg6NKlQB1KMyw2KOad8=",
+      "email": "",
+      "date_joined": "2016-01-26T00:48:40Z"
+   },
+   "model": "auth.user",
+   "pk": 12
+}
+]

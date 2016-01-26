@@ -1,0 +1,120 @@
+[
+{
+   "fields": {
+      "username": "admin",
+      "first_name": "",
+      "last_name": "",
+      "is_active": true,
+      "is_superuser": true,
+      "is_staff": true,
+      "last_login": "2016-01-26T00:42:19.783Z",
+      "groups": [],
+      "user_permissions": [],
+      "password": "pbkdf2_sha256$20000$YsEezuzdiF8o$i+slnEdt1UyOFaMTux4ml0ZFBqnDRSUc9llXsAX2LMw=",
+      "email": "blue.cuenca@gmail.com",
+      "date_joined": "2016-01-26T00:41:46.137Z"
+   },
+   "model": "auth.user",
+   "pk": 7
+},
+{
+   "fields": {
+      "username": "judge1",
+      "first_name": "Judge 1",
+      "last_name": "",
+      "is_active": true,
+      "is_superuser": false,
+      "is_staff": false,
+      "last_login": null,
+      "groups": [
+         2
+      ],
+      "user_permissions": [],
+      "password": "pbkdf2_sha256$20000$hY3CFmVQlJTT$cCMEcSEmrO6lDNQCeOuzA32AivXr4k8hAXiv1XGmPpA=",
+      "email": "",
+      "date_joined": "2016-01-26T00:45:45Z"
+   },
+   "model": "auth.user",
+   "pk": 8
+},
+{
+   "fields": {
+      "username": "judge2",
+      "first_name": "",
+      "last_name": "",
+      "is_active": true,
+      "is_superuser": false,
+      "is_staff": false,
+      "last_login": null,
+      "groups": [
+         2
+      ],
+      "user_permissions": [],
+      "password": "pbkdf2_sha256$20000$p8Wc1Pv6lYqO$ucp/AHzWSQETiMFhZkQEL7lEm8IbM+1nK8k4PdLIybk=",
+      "email": "",
+      "date_joined": "2016-01-26T00:47:41Z"
+   },
+   "model": "auth.user",
+   "pk": 9
+},
+{
+   "fields": {
+      "username": "judge3",
+      "first_name": "",
+      "last_name": "",
+      "is_active": true,
+      "is_superuser": false,
+      "is_staff": false,
+      "last_login": null,
+      "groups": [
+         2
+      ],
+      "user_permissions": [],
+      "password": "pbkdf2_sha256$20000$UTm3oJasD9ML$VlZbBe3WzeX+Q0i+Bk6X7OPK5iMdVjg6IUGpZtUXKso=",
+      "email": "",
+      "date_joined": "2016-01-26T00:47:50Z"
+   },
+   "model": "auth.user",
+   "pk": 10
+},
+{
+   "fields": {
+      "username": "judge4",
+      "first_name": "",
+      "last_name": "",
+      "is_active": true,
+      "is_superuser": false,
+      "is_staff": false,
+      "last_login": null,
+      "groups": [
+         2
+      ],
+      "user_permissions": [],
+      "password": "pbkdf2_sha256$20000$f6tBmEVt40UT$rauJBGcUgK+DI/TVB1OGCxbN/2bcaro+30TYgWk/Og8=",
+      "email": "",
+      "date_joined": "2016-01-26T00:48:22Z"
+   },
+   "model": "auth.user",
+   "pk": 11
+},
+{
+   "fields": {
+      "username": "judge5",
+      "first_name": "",
+      "last_name": "",
+      "is_active": true,
+      "is_superuser": false,
+      "is_staff": false,
+      "last_login": null,
+      "groups": [
+         2
+      ],
+      "user_permissions": [],
+      "password": "pbkdf2_sha256$20000$WMGevS1eLx9o$6VF80p8CU6SqycJM3zAWo1JMyg6NKlQB1KMyw2KOad8=",
+      "email": "",
+      "date_joined": "2016-01-26T00:48:40Z"
+   },
+   "model": "auth.user",
+   "pk": 12
+}
+]
