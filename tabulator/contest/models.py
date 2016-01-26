@@ -133,6 +133,7 @@ class Candidate(models.Model):
 class ScoreCriterion(models.Model):
     candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
     criterion = models.ForeignKey(Criterion, on_delete=models.CASCADE)
+    judge = models.ForeignKey(User, on_delete=models.CASCADE)
     score = score_field(default=100)
     weighted_score = models.DecimalField(max_digits=5, decimal_places=2)
 
