@@ -13,17 +13,6 @@
 {
    "fields": {
       "visible": 1,
-      "sequence": 0,
-      "name": "Talent Show",
-      "weight": 20,
-      "description": "Talent Show"
-   },
-   "model": "contest.category",
-   "pk": 2
-},
-{
-   "fields": {
-      "visible": 1,
       "sequence": 2,
       "name": "Ethnic Wear",
       "weight": 10,
@@ -75,66 +64,6 @@
    },
    "model": "contest.category",
    "pk": 8
-},
-{
-   "fields": {
-      "category": 2,
-      "_order": 0,
-      "name": "Mastery of Presentation",
-      "weight": 30,
-      "short_name": "Mastery",
-      "description": ""
-   },
-   "model": "contest.criterion",
-   "pk": 1
-},
-{
-   "fields": {
-      "category": 2,
-      "_order": 1,
-      "name": "Stage Presence",
-      "weight": 20,
-      "short_name": "Presence",
-      "description": ""
-   },
-   "model": "contest.criterion",
-   "pk": 2
-},
-{
-   "fields": {
-      "category": 2,
-      "_order": 2,
-      "name": "Entertainment Value and Audience Impact",
-      "weight": 20,
-      "short_name": "Impact",
-      "description": ""
-   },
-   "model": "contest.criterion",
-   "pk": 3
-},
-{
-   "fields": {
-      "category": 2,
-      "_order": 3,
-      "name": "Level of Difficulty of Talent",
-      "weight": 20,
-      "short_name": "Difficulty",
-      "description": ""
-   },
-   "model": "contest.criterion",
-   "pk": 4
-},
-{
-   "fields": {
-      "category": 2,
-      "_order": 4,
-      "name": "Appropriateness of Attire",
-      "weight": 10,
-      "short_name": "Attire",
-      "description": ""
-   },
-   "model": "contest.criterion",
-   "pk": 5
 },
 {
    "fields": {

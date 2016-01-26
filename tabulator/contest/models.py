@@ -3,9 +3,13 @@ models.py
 """
 from __future__ import unicode_literals
 
+import logging
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
+
+
+logger = logging.getLogger(__name__)
 
 
 def weight_field(*args, **kwargs):
@@ -31,6 +35,7 @@ GENDER_CHOICES = [
     ('M', 'Male'),
     ('F', 'Female'),
 ]
+
 
 def cm_to_feet_inches(cm):
     whole_inches = int(round(cm * 0.39370079))
@@ -135,7 +140,14 @@ class ScoreCriterion(models.Model):
     criterion = models.ForeignKey(Criterion, on_delete=models.CASCADE)
     judge = models.ForeignKey(User, on_delete=models.CASCADE)
     score = score_field(default=100)
-    weighted_score = models.DecimalField(max_digits=5, decimal_places=2)
+    weighted_score = models.DecimalField(max_digits=6, decimal_places=2)
+
+    def save(self, *args, **kwargs):
+        # do something useful
+        c_weight = self.criterion.weight / 100.00
+        logger.error("c_weight = %f", c_weight)
+        self.weighted_score = c_weight * self.score
+        super(ScoreCriterion, self).save(*args, **kwargs)
 
     def __unicode__(self):
         return u"{}({}) = {}".format(
@@ -145,16 +157,25 @@ class ScoreCriterion(models.Model):
         )
 
     class Meta:
-        unique_together = [('candidate', 'criterion'), ]
+        unique_together = [('candidate', 'criterion', 'judge'), ]
         verbose_name_plural = 'Criteria Scores'
     # objects = models.Manager()
 
 
-def get_candidate_scores(candidate, category):
+def get_candidate_scores(candidate, category, judge):
     criteria = category.criterion_set.all()
     scores = []
     for criterion in criteria:
         score = ScoreCriterion.objects.get_or_create(candidate=candidate,
-                                                     criterion=criterion)
+                                                     criterion=criterion,
+                                                     judge=judge)
         scores.append(score)
     return scores
+
+
+def populate_candidate_scores_for_judge(candidate, judge):
+    all_scores = []
+    for category in Category.objects.all():
+        scores = get_candidate_scores(candidate, category, judge)
+        all_scores.extend(scores)
+    return all_scores
