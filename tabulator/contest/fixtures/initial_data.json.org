@@ -1,0 +1,355 @@
+[
+{
+   "fields": {
+      "visible": 1,
+      "sequence": 1,
+      "name": "Production Number",
+      "weight": 15,
+      "description": "Production Number"
+   },
+   "model": "contest.category",
+   "pk": 1
+},
+{
+   "fields": {
+      "visible": 1,
+      "sequence": 0,
+      "name": "Talent Show",
+      "weight": 20,
+      "description": "Talent Show"
+   },
+   "model": "contest.category",
+   "pk": 2
+},
+{
+   "fields": {
+      "visible": 1,
+      "sequence": 2,
+      "name": "Ethnic Wear",
+      "weight": 10,
+      "description": "Ethnic Wear"
+   },
+   "model": "contest.category",
+   "pk": 4
+},
+{
+   "fields": {
+      "visible": 1,
+      "sequence": 3,
+      "name": "Swim Wear",
+      "weight": 10,
+      "description": "Swim Wear"
+   },
+   "model": "contest.category",
+   "pk": 5
+},
+{
+   "fields": {
+      "visible": 1,
+      "sequence": 4,
+      "name": "Formal Wear",
+      "weight": 10,
+      "description": "Formal Wear"
+   },
+   "model": "contest.category",
+   "pk": 6
+},
+{
+   "fields": {
+      "visible": 1,
+      "sequence": 90,
+      "name": "Final: Question and Answer",
+      "weight": 50,
+      "description": "Question and Answer"
+   },
+   "model": "contest.category",
+   "pk": 7
+},
+{
+   "fields": {
+      "visible": 1,
+      "sequence": 99,
+      "name": "Final: Beauty",
+      "weight": 50,
+      "description": "Final Score for  Beauty"
+   },
+   "model": "contest.category",
+   "pk": 8
+},
+{
+   "fields": {
+      "category": 2,
+      "_order": 0,
+      "name": "Mastery of Presentation",
+      "weight": 30,
+      "short_name": "Mastery",
+      "description": ""
+   },
+   "model": "contest.criterion",
+   "pk": 1
+},
+{
+   "fields": {
+      "category": 2,
+      "_order": 1,
+      "name": "Stage Presence",
+      "weight": 20,
+      "short_name": "Presence",
+      "description": ""
+   },
+   "model": "contest.criterion",
+   "pk": 2
+},
+{
+   "fields": {
+      "category": 2,
+      "_order": 2,
+      "name": "Entertainment Value and Audience Impact",
+      "weight": 20,
+      "short_name": "Impact",
+      "description": ""
+   },
+   "model": "contest.criterion",
+   "pk": 3
+},
+{
+   "fields": {
+      "category": 2,
+      "_order": 3,
+      "name": "Level of Difficulty of Talent",
+      "weight": 20,
+      "short_name": "Difficulty",
+      "description": ""
+   },
+   "model": "contest.criterion",
+   "pk": 4
+},
+{
+   "fields": {
+      "category": 2,
+      "_order": 4,
+      "name": "Appropriateness of Attire",
+      "weight": 10,
+      "short_name": "Attire",
+      "description": ""
+   },
+   "model": "contest.criterion",
+   "pk": 5
+},
+{
+   "fields": {
+      "category": 1,
+      "_order": 0,
+      "name": "Gracefulness",
+      "weight": 20,
+      "short_name": "Grace",
+      "description": ""
+   },
+   "model": "contest.criterion",
+   "pk": 6
+},
+{
+   "fields": {
+      "category": 1,
+      "_order": 1,
+      "name": "Projection",
+      "weight": 25,
+      "short_name": "Projection",
+      "description": ""
+   },
+   "model": "contest.criterion",
+   "pk": 7
+},
+{
+   "fields": {
+      "category": 1,
+      "_order": 2,
+      "name": "Confidence",
+      "weight": 20,
+      "short_name": "Confidence",
+      "description": ""
+   },
+   "model": "contest.criterion",
+   "pk": 8
+},
+{
+   "fields": {
+      "category": 1,
+      "_order": 3,
+      "name": "Overall Appearance",
+      "weight": 35,
+      "short_name": "Appearance",
+      "description": ""
+   },
+   "model": "contest.criterion",
+   "pk": 9
+},
+{
+   "fields": {
+      "category": 4,
+      "_order": 0,
+      "name": "Stage Presence",
+      "weight": 25,
+      "short_name": "Presence",
+      "description": ""
+   },
+   "model": "contest.criterion",
+   "pk": 10
+},
+{
+   "fields": {
+      "category": 4,
+      "_order": 1,
+      "name": "Creative / Technical Ability",
+      "weight": 25,
+      "short_name": "Ability",
+      "description": ""
+   },
+   "model": "contest.criterion",
+   "pk": 11
+},
+{
+   "fields": {
+      "category": 4,
+      "_order": 2,
+      "name": "Stance",
+      "weight": 40,
+      "short_name": "Stance",
+      "description": ""
+   },
+   "model": "contest.criterion",
+   "pk": 12
+},
+{
+   "fields": {
+      "category": 4,
+      "_order": 3,
+      "name": "Overall Appearance",
+      "weight": 10,
+      "short_name": "Appearance",
+      "description": ""
+   },
+   "model": "contest.criterion",
+   "pk": 13
+},
+{
+   "fields": {
+      "category": 5,
+      "_order": 0,
+      "name": "Body Figure",
+      "weight": 50,
+      "short_name": "Body Figure",
+      "description": ""
+   },
+   "model": "contest.criterion",
+   "pk": 14
+},
+{
+   "fields": {
+      "category": 5,
+      "_order": 1,
+      "name": "Confidence",
+      "weight": 40,
+      "short_name": "Confidence",
+      "description": ""
+   },
+   "model": "contest.criterion",
+   "pk": 15
+},
+{
+   "fields": {
+      "category": 5,
+      "_order": 2,
+      "name": "Audience Appeal",
+      "weight": 10,
+      "short_name": "Audience Appeal",
+      "description": ""
+   },
+   "model": "contest.criterion",
+   "pk": 16
+},
+{
+   "fields": {
+      "category": 6,
+      "_order": 0,
+      "name": "Poise and Glamour",
+      "weight": 40,
+      "short_name": "Poise",
+      "description": ""
+   },
+   "model": "contest.criterion",
+   "pk": 17
+},
+{
+   "fields": {
+      "category": 6,
+      "_order": 1,
+      "name": "Stance",
+      "weight": 40,
+      "short_name": "Stance",
+      "description": ""
+   },
+   "model": "contest.criterion",
+   "pk": 18
+},
+{
+   "fields": {
+      "category": 6,
+      "_order": 2,
+      "name": "Audience Impact",
+      "weight": 20,
+      "short_name": "Audience Impact",
+      "description": ""
+   },
+   "model": "contest.criterion",
+   "pk": 19
+},
+{
+   "fields": {
+      "category": 7,
+      "_order": 0,
+      "name": "Articulcation, Diction, and Grammar",
+      "weight": 30,
+      "short_name": "Articulation",
+      "description": ""
+   },
+   "model": "contest.criterion",
+   "pk": 25
+},
+{
+   "fields": {
+      "category": 7,
+      "_order": 1,
+      "name": "Relevance, Content, Wit, and Impact",
+      "weight": 40,
+      "short_name": "Impact",
+      "description": ""
+   },
+   "model": "contest.criterion",
+   "pk": 26
+},
+{
+   "fields": {
+      "category": 7,
+      "_order": 2,
+      "name": "Delivery and Choice of Words",
+      "weight": 30,
+      "short_name": "Delivery",
+      "description": ""
+   },
+   "model": "contest.criterion",
+   "pk": 27
+},
+{
+   "fields": {
+      "category": 8,
+      "_order": 0,
+      "name": "Beauty of Face and Figure",
+      "weight": 100,
+      "short_name": "Beauty",
+      "description": ""
+   },
+   "model": "contest.criterion",
+   "pk": 28
+}
+]
