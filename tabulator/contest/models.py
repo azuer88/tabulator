@@ -7,7 +7,7 @@ import logging
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
-
+from django.db.models import Sum
 
 logger = logging.getLogger(__name__)
 
@@ -65,12 +65,13 @@ class Category(models.Model):
 
     objects = models.Manager()
     visibles = CategoryManager()
+    phase = models.PositiveIntegerField(default=1)
 
     def __unicode__(self):
         return u"{}".format(self.name)
 
     class Meta:
-        ordering = ['sequence']
+        ordering = ['phase', 'sequence']
         verbose_name_plural = 'Categories'
 
 
@@ -179,3 +180,14 @@ def populate_candidate_scores_for_judge(candidate, judge):
         scores = get_candidate_scores(candidate, category, judge)
         all_scores.extend(scores)
     return all_scores
+
+
+def get_ranking_data(gender):
+    qry = ScoreCriterion.objects.filter(candidate__gender=gender) \
+        .values('candidate', 'criterion__category', 'judge') \
+        .annotate(score=Sum('weighted_score')) \
+        .order_by('-score') \
+        .values('criterion__category__name', 'candidate__name',
+                'judge__first_name', 'score')
+    return qry
+
