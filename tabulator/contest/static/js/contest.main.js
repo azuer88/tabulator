@@ -16,7 +16,7 @@ $(document).ready(function() {
     $('a.candidate_link').click(function( eventObject ){
         var elem = $( this );
         eventObject.preventDefault();
-        $('#stage').load(elem.attr( "href" ));
+        $('#jumbotron').load(elem.attr( "href" ));
         console.log(elem.attr( "href" ));
     });
 

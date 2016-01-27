@@ -32,11 +32,18 @@ def test_form(request):
     }
     return render(request, "testform.html", context=context)
 
+@login_required
 def get_candidate(request, candidate_id):
     # candidate = get_object_or_404(Candidate, pk=candidate_id)
     candidate = Candidate.objects.get(pk=candidate_id)
+    categories = Category.visibles.filter(phase=1)
+    scores = ScoreCriterion.objects.filter(
+        candidate=candidate,
+        judge=request.user,
+    )
     context = {
         'candidate': candidate,
+        'categories': categories,
     }
     return render(request, "candidate.html", context=context)
 

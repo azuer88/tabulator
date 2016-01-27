@@ -1,6 +1,6 @@
 <div class="row">
 
-    <div class="col-md-2 text-right"><strong>Name:</strong></div>
+    <div class="col-md-2 text-right"><strong>Candidate {{ candidate.number }}:</strong></div>
     <div class="col-md-4">{{ candidate.name }}&nbsp;</div>
     <div class="col-md-1 text-right"><strong>Age:</strong></div>
     <div class="col-md-1">{{ candidate.age }}&nbsp;</div>
@@ -11,9 +11,9 @@
     <div class="col-md-2 text-right"><strong>Nickname:</strong></div>
     <div class="col-md-4">{{ candidate.nickname }}&nbsp;</div>
     <div class="col-md-1 text-right"><strong>Height:</strong></div>
-    <div class="col-md-2">{{ candidate.height }}&nbsp;</div>
+    <div class="col-md-2">{{ candidate.height }} cm ({{ candidate.english_height }})&nbsp;</div>
     <div class="col-md-1 text-right"><strong>Weight:</strong></div>
-    <div class="col-md-2">{{ candidate.weight }}</div>
+    <div class="col-md-2">{{ candidate.weight }} Kg</div>
 </div>
 <div class="row">
     <div class="col-md-2 text-right"><strong>Motto:</strong></div>
@@ -22,4 +22,27 @@
 <div class="row">
     <div class="col-md-2 text-right"><strong>Dream:</strong></div>
     <div class="col-md-10">{{ candidate.dream }}&nbsp;</div>
+</div>
+
+<ul class="nav nav-tabs">
+    {% for category in categories %}
+    <li {% if forloop.first %} class="active"{% endif %}>
+        <a data-toggle="tab" href="#cat{{ category.sequence}}">{{ category.name }}</a>
+    </li>
+    {% endfor %}
+</ul>
+
+<div class="tab-content">
+  <div id="home" class="tab-pane fade in active">
+    <h3>HOME</h3>
+    <p>Some content.</p>
+  </div>
+  <div id="menu1" class="tab-pane fade">
+    <h3>Menu 1</h3>
+    <p>Some content in menu 1.</p>
+  </div>
+  <div id="menu2" class="tab-pane fade">
+    <h3>Menu 2</h3>
+    <p>Some content in menu 2.</p>
+  </div>
 </div>

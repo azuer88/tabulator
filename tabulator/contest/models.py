@@ -115,7 +115,7 @@ class MaleCandidate(models.Manager):
 
 
 class Candidate(models.Model):
-    name = models.CharField(max_length=1/00)
+    name = models.CharField(max_length=100)
     nickname = models.CharField(max_length=30, default='', blank=True)
     age = models.PositiveIntegerField(default=19)
     vital_statistics = models.CharField(max_length=30, default='', blank=True)
@@ -133,9 +133,11 @@ class Candidate(models.Model):
     def __unicode__(self):
         return u"{}".format(self.name)
 
-    def height_english(self):
+
+    def _get_height_english(self):
         feet, inches = cm_to_feet_inches(self.height)
         return u"{}' {}\"".format(feet, inches)
+    english_height = property(_get_height_english)
 
     objects = models.Manager()
     males = MaleCandidate()
