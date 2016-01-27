@@ -13,6 +13,9 @@ from django.db.models import Sum  # , Value as V
 
 decimal.getcontext().prec = 2
 
+def fk(*args, **kwargs):
+    return models.ForeignKey(*args, on_delete=models.CASCADE, **kwargs)
+
 
 def weight_field(*args, **kwargs):
     """
@@ -81,7 +84,7 @@ class Criterion(models.Model):
     short_name = models.CharField(max_length=30)
     name = models.CharField(max_length=60)
     description = models.CharField(max_length=200, blank=True, default='')
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = fk(Category)
     weight = weight_field()
 
     def __unicode__(self):
@@ -119,7 +122,7 @@ class Candidate(models.Model):
     height = models.PositiveIntegerField(default=0)
     weight = models.PositiveIntegerField(default=0)
     number = models.PositiveIntegerField(default=0)
-    group = models.ForeignKey(Group, on_delete=models.CASCADE)
+    group = fk(Group)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
 
     motto = models.CharField(max_length=200, blank=True, default='')
@@ -139,9 +142,9 @@ class Candidate(models.Model):
 
 
 class ScoreCriterion(models.Model):
-    candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
-    criterion = models.ForeignKey(Criterion, on_delete=models.CASCADE)
-    judge = models.ForeignKey(User, on_delete=models.CASCADE)
+    candidate = fk(Candidate)
+    criterion = fk(Criterion)
+    judge = fk(User)
     score = score_field(default=100)
     weighted_score = models.DecimalField(max_digits=6, decimal_places=2)
 
@@ -163,6 +166,25 @@ class ScoreCriterion(models.Model):
         unique_together = [('candidate', 'criterion', 'judge'), ]
         verbose_name_plural = 'Criteria Scores'
     # objects = models.Manager()
+
+
+class RankCategory(models.Model):
+    candidate = fk(Candidate)
+    category = fk(Category)
+    judge = fk(User)
+    rank = models.PositiveSmallIntegerField(default=1)
+
+    class Meta:
+        unique_together = [('candidate', 'category', 'judge')]
+        verbose_name_plural = 'Category Ranking'
+
+    def __unicode__(self):
+        return u"{}:{}({}) = {}".format(
+            self.judge,
+            self.candidate,
+            self.category,
+            self.rank,
+        )
 
 
 def populate_scores():
@@ -197,6 +219,11 @@ def populate_scores():
     duration = time.time() - start_time
     return (count, duration)
 
+def rank_scores():
+    pass
+
+def category_ranking(category, gender):
+    pass
 
 def get_ranking_data(gender, phase):
     qry = ScoreCriterion.objects.filter(candidate__gender=gender,
