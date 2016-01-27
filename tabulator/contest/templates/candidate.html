@@ -35,7 +35,19 @@
 <div class="tab-content">
   {% for category in categories %}
   <div id="cat{{ category.id}}" class="tab-pane fade {% if forloop.first %}in active {% endif %}">
+    {% for criterion in category.criterion_set.all %}
+    <div class="row">
+       {{ criterion.name }}  [{{ candidate.id }}, {{ judge.id }}, {{ criterion.id }}]
+
+	{{ judge }}
+    </div>
+    {% endfor %}
     <p>Some content. {{ category.description }}</p>
   </div>
   {% endfor %}
 </div>
+
+scores:
+{% for score in scores %}
+   |{{ score }}|
+{% endfor %}

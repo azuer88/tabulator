@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, JsonResponse
@@ -34,16 +35,25 @@ def test_form(request):
 
 @login_required
 def get_candidate(request, candidate_id):
+    from django.contrib.auth.models import User
     # candidate = get_object_or_404(Candidate, pk=candidate_id)
     candidate = Candidate.objects.get(pk=candidate_id)
-    categories = Category.visibles.filter(phase=1)
+    categories = Category.visibles.filter(phase=1).order_by('sequence')
+
     scores = ScoreCriterion.objects.filter(
         candidate=candidate,
-        judge=request.user,
-    )
+        # judge=request.user,
+        judge=User.objects.get(username='judge1'),
+        criterion__category__is_visible=True,
+        criterion__category__phase=1,
+    ).order_by('candidate', 'judge', 'criterion__category__sequence') \
+      .values('criterion__category__id', 'criterion__category__name', 'criterion__id', 'criterion__name', 'score')
+    
     context = {
         'candidate': candidate,
         'categories': categories,
+        'judge': request.user,
+        'scores': scores,
     }
     return render(request, "candidate.html", context=context)
 
