@@ -4,7 +4,6 @@ models.py
 from __future__ import unicode_literals
 import decimal
 
-import logging
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -12,7 +11,6 @@ from django.db.models import Sum  # , Value as V
 # from django.db.models.functions import Concat
 
 
-logger = logging.getLogger(__name__)
 decimal.getcontext().prec = 2
 
 
@@ -57,7 +55,7 @@ class Judge(models.Model):
 
 class CategoryManager(models.Manager):
     def get_queryset(self):
-        return super(CategoryManager, self).get_queryset().filter(visible__gt=0)
+        return super(CategoryManager, self).get_queryset().filter(is_visible__gt=0)
 
 
 class Category(models.Model):
@@ -65,7 +63,7 @@ class Category(models.Model):
     description = models.CharField(max_length=200)
     sequence = models.IntegerField()
     weight = weight_field()
-    visible = models.IntegerField(default=1)
+    is_visible = models.BooleanField(default=True)
 
     objects = models.Manager()
     visibles = CategoryManager()
@@ -104,13 +102,13 @@ class Group(models.Model):
 class FemaleCandidate(models.Manager):
     def get_queryset(self):
         return super(FemaleCandidate, self).get_queryset() \
-            .filter(gender='F', active=True)
+            .filter(gender='F', is_active=True)
 
 
 class MaleCandidate(models.Manager):
     def get_queryset(self):
         return super(MaleCandidate, self).get_queryset() \
-            .filter(gender='M', active=True)
+            .filter(gender='M', is_active=True)
 
 
 class Candidate(models.Model):
@@ -127,7 +125,7 @@ class Candidate(models.Model):
     motto = models.CharField(max_length=200, blank=True, default='')
     dream = models.CharField(max_length=200, blank=True, default='')
 
-    active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=True)
 
     def __unicode__(self):
         return u"{}".format(self.name)
@@ -150,7 +148,7 @@ class ScoreCriterion(models.Model):
     def save(self, *args, **kwargs):
         # do something useful
         c_weight = self.criterion.weight / 100.00
-        logger.error("c_weight = %f", c_weight)
+
         self.weighted_score = c_weight * self.score
         super(ScoreCriterion, self).save(*args, **kwargs)
 
@@ -167,23 +165,37 @@ class ScoreCriterion(models.Model):
     # objects = models.Manager()
 
 
-def get_candidate_scores(candidate, category, judge):
-    criteria = category.criterion_set.all()
+def populate_scores():
+    import time
+    start_time = time.time()
+    # delete all previous scores
+    ScoreCriterion.objects.all().delete()
+
+    candidates = Candidate.objects.all()
+    categories = Category.visibles.all()
+    judges = User.objects.filter(is_active=True, is_staff=False)
+
+    count = 0
     scores = []
-    for criterion in criteria:
-        score = ScoreCriterion.objects.get_or_create(candidate=candidate,
-                                                     criterion=criterion,
-                                                     judge=judge)
-        scores.append(score)
-    return scores
-
-
-def populate_candidate_scores_for_judge(candidate, judge):
-    all_scores = []
-    for category in Category.objects.all():
-        scores = get_candidate_scores(candidate, category, judge)
-        all_scores.extend(scores)
-    return all_scores
+    for candidate in candidates:
+        for judge in judges:
+            for category in categories:
+                for criterion in category.criterion_set.all():
+                    weight = criterion.weight
+                    #ScoreCriterion.objects.create(
+                    scores.append(
+                        ScoreCriterion(
+                            candidate=candidate,
+                            criterion=criterion,
+                            judge=judge,
+                            score=100,
+                            weighted_score=weight,
+                        )
+                    )
+                    count += 1
+    ScoreCriterion.objects.bulk_create(scores)
+    duration = time.time() - start_time
+    return (count, duration)
 
 
 def get_ranking_data(gender, phase):

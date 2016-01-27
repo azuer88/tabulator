@@ -50,7 +50,7 @@ def index(request):
 
     male_ids = Candidate.males.order_by('number').values_list('id', 'number', flat=False)
     female_ids = Candidate.females.order_by('number').values_list('id', 'number', flat=False)
-    first = femail_ids[0][0]
+    first = female_ids[0][0]
 
     context = {
             'app_title': settings.APP_TITLE,
