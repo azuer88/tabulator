@@ -27,22 +27,15 @@
 <ul class="nav nav-tabs">
     {% for category in categories %}
     <li {% if forloop.first %} class="active"{% endif %}>
-        <a data-toggle="tab" href="#cat{{ category.sequence}}">{{ category.name }}</a>
+        <a data-toggle="tab" href="#cat{{ category.id}}">{{ category.name }}</a>
     </li>
     {% endfor %}
 </ul>
 
 <div class="tab-content">
-  <div id="home" class="tab-pane fade in active">
-    <h3>HOME</h3>
-    <p>Some content.</p>
+  {% for category in categories %}
+  <div id="cat{{ category.id}}" class="tab-pane fade {% if forloop.first %}in active {% endif %}">
+    <p>Some content. {{ category.description }}</p>
   </div>
-  <div id="menu1" class="tab-pane fade">
-    <h3>Menu 1</h3>
-    <p>Some content in menu 1.</p>
-  </div>
-  <div id="menu2" class="tab-pane fade">
-    <h3>Menu 2</h3>
-    <p>Some content in menu 2.</p>
-  </div>
+  {% endfor %}
 </div>
