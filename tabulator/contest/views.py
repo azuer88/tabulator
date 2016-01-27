@@ -7,7 +7,6 @@ from django.http import HttpResponse, JsonResponse
 from django.template import RequestContext
 from django.views.generic import View
 from django.contrib.auth import logout, authenticate, login
-from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 
 from .models import Category, Criterion, Candidate, ScoreCriterion
@@ -30,7 +29,6 @@ class ContestView(View):
         }
         return render(request, self.template_name, context=context)
 
-
 def test_form(request):
     context = {
         'category': 'Production Number',
@@ -46,8 +44,8 @@ def get_candidate(request, candidate_id):
 
     scores = ScoreCriterion.objects.filter(
         candidate=candidate,
-        judge=request.user,
-        # judge=User.objects.get(username='judge1'),
+        # judge=request.user,
+        judge=User.objects.get(username='judge1'),
         criterion__category__is_visible=True,
         criterion__category__phase=1,
     ).order_by('candidate', 'judge', 'criterion__category__sequence') \
@@ -130,21 +128,9 @@ def login_view(request):
 
 @login_required
 def set_score(request):
-    name = request.GET['name']
-    value = request.GET['value']
-    candidate_id, criterion_id, judge_id = name.split('.')
-
-    score, dummy  = ScoreCriterion.objects.get_or_create(
-	candidate__id=int(candidate_id),
-        criterion__id=int(criterion_id),
-        judge__id=int(judge_id))
-
-    score.score = int(value)
-    score.save()    
-
     result = {}
     result['code'] = 200
-    result['message'] = "got {} = {}".format(name, value)
+    result['message'] = 'OK'
     return JsonResponse(result)
 
 @login_required
@@ -153,5 +139,4 @@ def get_score(request):
     result['code'] = 200
     result['message'] = 'OK'
     return JsonResponse(result)
-
 
