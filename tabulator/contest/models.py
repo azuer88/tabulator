@@ -288,3 +288,8 @@ def create_ranking(gender):
         ranks[idx]['ranking'].append(rec)
 
     return ranks
+
+# query to get all scores group per category, judge, candidate
+#
+# qry = ScoreCriterion.objects.filter(candidate__gender=gender, criterion__category__phase=phase).values('candidate', 'criterion__category', 'judge').annotate(wscore=Sum('weighted_score')).order_by('-wscore').values('criterion__category__name', 'candidate__name', 'score','judge__first_name', 'judge__last_name', 'judge__username')
+
