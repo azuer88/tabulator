@@ -25,29 +25,31 @@
 </div>
 
 <ul class="nav nav-tabs">
-    {% for category in categories %}
+    {% for r in data %}
     <li {% if forloop.first %} class="active"{% endif %}>
-        <a data-toggle="tab" href="#cat{{ category.id}}">{{ category.name }}</a>
+        <a data-toggle="tab" href="#cat{{ r.category_id}}">{{ r.category }}</a>
     </li>
     {% endfor %}
 </ul>
 
 <div class="tab-content">
-  {% for category in categories %}
-  <div id="cat{{ category.id}}" class="tab-pane fade {% if forloop.first %}in active {% endif %}">
-    {% for criterion in category.criterion_set.all %}
+  {% for r in data %}
+  <div id="cat{{ r.category_id}}" class="tab-pane fade {% if forloop.first %}in active {% endif %}">
+    {% for item in r.items %}
     <div class="row">
-       {{ criterion.name }}  [{{ candidate.id }}, {{ judge.id }}, {{ criterion.id }}]
-
-	{{ judge }}
+       <div class="col-md-2">&nbsp;</div>
+       <div class="col-md-4 text-right">
+           <label for="crit_{{ item.criterion_id }}">
+             {{ item.criterion }} 
+           </label>
+       </div>
+       <div class="col-md-1">
+           <input class="form-control" id="crit_{{ item.criterion_id }}" type="text" value="{{ item.score }}" name="{{ candidate.id }}.{{ item.criterion_id }}.{{ judge_id }}">
+       </div>
+       <div class="col-md-7"></div>
     </div>
     {% endfor %}
-    <p>Some content. {{ category.description }}</p>
   </div>
   {% endfor %}
 </div>
 
-scores:
-{% for score in scores %}
-   |{{ score }}|
-{% endfor %}

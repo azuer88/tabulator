@@ -1,4 +1,6 @@
-from collections import OrderedDict
+from operator import itemgetter
+from itertools import groupby
+
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, JsonResponse
@@ -48,12 +50,29 @@ def get_candidate(request, candidate_id):
         criterion__category__phase=1,
     ).order_by('candidate', 'judge', 'criterion__category__sequence') \
       .values('criterion__category__id', 'criterion__category__name', 'criterion__id', 'criterion__name', 'score')
-    
+    data = []
+    for category, items in groupby(scores, key=itemgetter('criterion__category__name')):
+       cat_id = None
+       m = []
+       for item in items:
+           if cat_id is None:
+               cat_id = item['criterion__category__id']
+           m.append({
+               'criterion_id': item['criterion__id'],
+               'criterion': item['criterion__name'],
+               'score': item['score'],
+           })
+       rec = {
+           'category': category,
+           'category_id': cat_id,
+           'items': m,
+       }
+       data.append(rec)
+
     context = {
         'candidate': candidate,
-        'categories': categories,
-        'judge': request.user,
-        'scores': scores,
+        'judge_id': request.user.id,
+        'data': data,
     }
     return render(request, "candidate.html", context=context)
 
