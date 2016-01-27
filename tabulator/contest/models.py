@@ -115,7 +115,7 @@ class MaleCandidate(models.Manager):
 
 
 class Candidate(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=1/00)
     nickname = models.CharField(max_length=30, default='', blank=True)
     age = models.PositiveIntegerField(default=19)
     vital_statistics = models.CharField(max_length=30, default='', blank=True)
@@ -132,6 +132,10 @@ class Candidate(models.Model):
 
     def __unicode__(self):
         return u"{}".format(self.name)
+
+    def height_english(self):
+        feet, inches = cm_to_feet_inches(self.height)
+        return u"{}' {}\"".format(feet, inches)
 
     objects = models.Manager()
     males = MaleCandidate()
@@ -220,7 +224,20 @@ def populate_scores():
     return (count, duration)
 
 def rank_scores():
-    pass
+    RankCategory.objects.all().delete()
+    categories = Category.visibles.all()
+    judges = User.objects.filter(is_active=True, is_staff=False)
+    genders = ['F', 'M']
+
+    # candidate, category, judge, rank
+    qry = ScoreCriterion.objects.filter(candidate__gender='F',
+                                        criterion__category=categories[0],
+                                        judge=judges[0])\
+            .values('candidate', 'criterion__category', 'judge')
+
+
+
+
 
 def category_ranking(category, gender):
     pass
