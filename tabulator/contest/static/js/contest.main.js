@@ -1,13 +1,15 @@
 function postScore(c, target_url) {
    var input_name = c.attr("name");
-   var input_value = c.attr("value");
+   var input_value = c.val();
    var input_data = {name: input_name, value: input_value};
   
    $.ajax({
-       type: "POST",
+       type: "GET",
        url: target_url,
-       data: input_data.serialize(),
-       success: function(){}
+       data: input_data,
+       success: function(data, status){
+        $('#staging').html(status)
+       }
    })
 };
    
@@ -24,7 +26,8 @@ $(document).ready(function() {
         c = $(this);
         $.when(
         c.focusout()).then(function() {
-        alert("changed " + c.attr("name"));
+            postScore(c, "/contest/setscore/")
+        // alert("changed " + c.attr("name"));
 	});
     });
 });

@@ -11,5 +11,6 @@ urlpatterns = [
     url(r'setscore/$', 'contest.views.set_score', name='contest-score-set'),
     url(r'getscore/$', 'contest.views.get_score', name='contest-score-get'),
     url(r'minor/$', 'contest.views.minor_awards', name='contest-minor'),
+    url(r'final/$', 'contest.views.final_view', name='contest-final'),
     #url(r'', ContestView.as_view()),
 ]

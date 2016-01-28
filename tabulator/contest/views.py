@@ -103,7 +103,7 @@ def index(request):
 
 
 @login_required
-def finals(request):
+def final_view(request):
     #context = RequestContext(request)
     template_name = "finals.html"
     category = Category.objects.first()
@@ -155,9 +155,20 @@ def login_view(request):
 
 @login_required
 def set_score(request):
+    name_str = request.GET['name']
+    value_str = request.GET['value']
+
+    candidate_id, criterion_id, judge_id = name_str.split('.')
+    score, dummy = ScoreCriterion.objects.get_or_create(
+        candidate__id=candidate_id,
+        criterion__id=criterion_id,
+        judge__id=judge_id,
+    )
+    score.score = int(value_str)
+    score.save()
     result = {}
     result['code'] = 200
-    result['message'] = 'OK'
+    result['message'] = "Got {} = {}".format(name_str, value_str)
     return JsonResponse(result)
 
 @login_required
@@ -167,6 +178,9 @@ def get_score(request):
     result['message'] = 'OK'
     return JsonResponse(result)
 
+from django.contrib.admin.views.decorators import staff_member_required
+
+@staff_member_required
 def minor_awards(request):
     m = consolidate_ranks()
     colw = 12 / len(m['female'].keys())

@@ -60,7 +60,7 @@ target/
 .spyderproject
 .idea/
 
-migrations/
+#migrations/
 db.sqlite3
 
 /*/static/*

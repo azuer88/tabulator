@@ -183,7 +183,6 @@ class RankCategory(models.Model):
     category = fk(Category)
     judge = fk(User)
     rank = models.PositiveSmallIntegerField(default=1)
-    score = score_field(default=100)
 
     class Meta:
         unique_together = [('candidate', 'category', 'judge', 'rank')]
@@ -195,6 +194,24 @@ class RankCategory(models.Model):
             self.candidate,
             self.category,
             self.rank,
+        )
+
+
+class ScoreCategory(models.Model):
+    candidate = fk(Candidate)
+    category = fk(Category)
+    judge = fk(User)
+    score = score_field(default=0)
+
+    class Meta:
+        unique_together = [('candidate', 'category', 'judge')]
+        verbose_name_plural = 'Category Scores'
+
+    def __unicode__(self):
+        return u"{}:{}({}) = {}".format(
+            self.judge,
+            self.candidate,
+            self.category,
         )
 
 
@@ -253,7 +270,12 @@ def _consolidate_ranks(gender, phase=1):
         .annotate(ave_rank=Avg('rank')) \
         .order_by('ave_rank') \
         .values_list('category__name', 'candidate__number', 'ave_rank')
+    category_ids = Category.visibles.filter(phase=phase)\
+                    .order_by('sequence')\
+                    .values_list("name", flat=True)
     ranks = defaultdict(list)
+    for k in category_ids:
+        ranks[k] = []
     for c_id, c_num, arank in qry:
         ranks[c_id].append({
             'number': c_num,
@@ -261,18 +283,41 @@ def _consolidate_ranks(gender, phase=1):
         })
     return dict(ranks)
 
+def _consolidate_scores(gender, phase=1):
+    qry = ScoreCriterion.objects.filter(
+        candidate__gender=gender,
+        criterion__category__phase=phase)\
+        .values('criterion__category', 'candidate', 'judge')\
+        .annotate(wscore=Sum('weighted_score'))\
+        .order_by("-wscore")\
+        .values_list("candidate__id",
+                     "criterion__category__id",
+                     "criterion__category__weight",
+                     "wscore",
+                     "judge__id")
+
+    scores = []
+
 def _rank_scores(gender, phase=1):
     qry = ScoreCriterion.objects.filter(
         candidate__gender=gender,
-        criterion__category__phase=phase) \
-        .values('candidate', 'criterion__category', 'judge') \
-        .annotate(wscore=Sum('weighted_score')) \
+        criterion__category__phase=phase)\
+        .values('candidate', 'criterion__category', 'judge')\
+        .annotate(wscore=Sum('weighted_score'))\
+        .order_by("-wscore")\
         .values_list("candidate__id",
                      "criterion__category__id",
                      "wscore",
                      "judge__id")
 
+    category_ids = Category.visibles.filter(phase=phase)\
+                    .order_by('sequence')\
+                    .values_list("id", flat=True)
     ranks = defaultdict(list)
+    for k in category_ids:
+        ranks[k] = []
+
+    # ranks = defaultdict(list)
 
     for (candidate_id, category_id, wscore, judge_id) in qry:
         rc = RankCategory()
@@ -289,59 +334,9 @@ def _rank_scores(gender, phase=1):
             if ranks[category_id][idx - 1].score == rc.score:
                 rc.rank = prev_rank
             else:
-                rc.rank = prev_rank + 1
+                rc.rank = prev_rank + 1.0
 
         ranks[category_id].append(rc)
 
     for k in ranks.keys():
         RankCategory.objects.bulk_create(ranks[k])
-
-
-def get_ranking_data(gender, phase):
-    qry = ScoreCriterion.objects.filter(candidate__gender=gender,
-                                        criterion__category__phase=phase) \
-        .values('candidate', 'criterion__category', 'judge') \
-        .annotate(score=Sum('weighted_score')) \
-        .order_by('-score') \
-        .values('criterion__category__name', 'candidate__name', 'score',
-                'judge__first_name', 'judge__last_name', 'judge__username')
-
-    return qry
-
-
-# todo:  change this such that it will create ranking per judge
-#   update: remove this code:
-def create_ranking(gender):
-    categories = Category.objects.filter(phase=1) \
-        .values_list("name", flat=True) \
-        .order_by('sequence')
-
-    ranks = []
-    mapping = {}
-    for k in categories:
-        ranks.append(
-            {'name': k,
-             'ranking': []}
-        )
-        mapping[k] = len(ranks) - 1
-
-    data = get_ranking_data(gender, 1)
-
-    for v in data:
-        criteria = v['criterion__category__name']
-        idx = mapping[criteria]
-
-        judge = "{} {}".format(v['judge__first_name'],
-                               v['judge__last_name'])
-        score = decimal.Decimal(v['score'])
-        name = v['candidate__name']
-
-        rec = {'judge': judge, 'name': name, 'score': score}
-
-        ranks[idx]['ranking'].append(rec)
-
-    return ranks
-
-# query to get all scores group per category, judge, candidate
-#
-# qry = ScoreCriterion.objects.filter(candidate__gender=gender, criterion__category__phase=phase).values('candidate', 'criterion__category', 'judge').annotate(wscore=Sum('weighted_score')).order_by('-wscore').values('criterion__category__name', 'candidate__name', 'score','judge__first_name', 'judge__last_name', 'judge__username')
