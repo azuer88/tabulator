@@ -4,7 +4,9 @@ models.py
 from __future__ import unicode_literals
 
 import decimal
-from collections import defaultdict
+from collections import defaultdict, OrderedDict
+from itertools import groupby
+from operator import itemgetter
 
 from django.db import models
 from django.contrib.auth.models import User
@@ -273,7 +275,7 @@ def _consolidate_ranks(gender, phase=1):
     category_ids = Category.visibles.filter(phase=phase)\
                     .order_by('sequence')\
                     .values_list("name", flat=True)
-    ranks = defaultdict(list)
+    ranks = OrderedDict()
     for k in category_ids:
         ranks[k] = []
     for c_id, c_num, arank in qry:
@@ -297,6 +299,39 @@ def _consolidate_scores(gender, phase=1):
                      "judge__id")
 
     scores = []
+    for score in qry:
+        candidate_id = score["candidate__id"]
+        category_id = score["criterion__category__id"]
+        judge_id = score["judge__id"]
+        weight = score["criterion__category_weight"]
+        w_score = score["wscore"]
+
+        scores.append({
+            'category_id': category_id,
+            'candidate_id': candidate_id,
+            'judge_id': judge_id,
+            'score': w_score * weight,
+        })
+
+    scores.sort(key=itemgetter('judge_id', 'candidate_id', 'category_id'))
+
+    total_scores = defaultdict(list)
+    for jud_id, can_id, cat_id, items in groupby(scores, key=itemgetter('category_id')):
+        total = 0.0
+        for elem in items:
+            total += elem['score']
+        total /= 100.00
+
+        total_scores[jud_id].append({
+            'candidate_id': can_id,
+            'score': total,
+        })
+
+
+    for k in total_scores.keys():
+        total_scores[k].sort(key=itemgetter('score'), reverse=True)
+        
+
 
 def _rank_scores(gender, phase=1):
     qry = ScoreCriterion.objects.filter(
@@ -313,7 +348,7 @@ def _rank_scores(gender, phase=1):
     category_ids = Category.visibles.filter(phase=phase)\
                     .order_by('sequence')\
                     .values_list("id", flat=True)
-    ranks = defaultdict(list)
+    ranks = OrderedDict()
     for k in category_ids:
         ranks[k] = []
 
