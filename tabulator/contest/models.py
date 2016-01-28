@@ -2,16 +2,19 @@
 models.py
 """
 from __future__ import unicode_literals
+
 import decimal
+from collections import defaultdict
 
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
-from django.db.models import Sum  # , Value as V
+from django.db.models import Sum, Avg  # , Value as V
 # from django.db.models.functions import Concat
 
 
 decimal.getcontext().prec = 2
+
 
 def fk(*args, **kwargs):
     return models.ForeignKey(*args, on_delete=models.CASCADE, **kwargs)
@@ -36,6 +39,7 @@ def score_field(*args, **kwargs):
         MaxValueValidator(100, "Can not be more than 100")
     ], **kwargs)
 
+
 GENDER_CHOICES = [
     ('M', 'Male'),
     ('F', 'Female'),
@@ -44,7 +48,7 @@ GENDER_CHOICES = [
 
 def cm_to_feet_inches(cm):
     whole_inches = int(round(cm * 0.39370079))
-    return (whole_inches / 12, whole_inches % 12)
+    return whole_inches / 12, whole_inches % 12
 
 
 # Create your models here.
@@ -133,10 +137,10 @@ class Candidate(models.Model):
     def __unicode__(self):
         return u"{}".format(self.name)
 
-
     def _get_height_english(self):
         feet, inches = cm_to_feet_inches(self.height)
         return u"{}' {}\"".format(feet, inches)
+
     english_height = property(_get_height_english)
 
     objects = models.Manager()
@@ -171,7 +175,7 @@ class ScoreCriterion(models.Model):
     class Meta:
         unique_together = [('candidate', 'criterion', 'judge'), ]
         verbose_name_plural = 'Criteria Scores'
-    # objects = models.Manager()
+        # objects = models.Manager()
 
 
 class RankCategory(models.Model):
@@ -179,9 +183,10 @@ class RankCategory(models.Model):
     category = fk(Category)
     judge = fk(User)
     rank = models.PositiveSmallIntegerField(default=1)
+    score = score_field(default=100)
 
     class Meta:
-        unique_together = [('candidate', 'category', 'judge')]
+        unique_together = [('candidate', 'category', 'judge', 'rank')]
         verbose_name_plural = 'Category Ranking'
 
     def __unicode__(self):
@@ -210,7 +215,7 @@ def populate_scores():
             for category in categories:
                 for criterion in category.criterion_set.all():
                     weight = criterion.weight
-                    #ScoreCriterion.objects.create(
+                    # ScoreCriterion.objects.create(
                     scores.append(
                         ScoreCriterion(
                             candidate=candidate,
@@ -223,26 +228,74 @@ def populate_scores():
                     count += 1
     ScoreCriterion.objects.bulk_create(scores)
     duration = time.time() - start_time
-    return (count, duration)
+    return count, duration
+
 
 def rank_scores():
     RankCategory.objects.all().delete()
-    categories = Category.visibles.all()
-    judges = User.objects.filter(is_active=True, is_staff=False)
-    genders = ['F', 'M']
-
-    # candidate, category, judge, rank
-    qry = ScoreCriterion.objects.filter(candidate__gender='F',
-                                        criterion__category=categories[0],
-                                        judge=judges[0])\
-            .values('candidate', 'criterion__category', 'judge')
+    _rank_scores('F')
+    _rank_scores('M')
 
 
+def consolidate_ranks():
+    rank_scores()
+    return {
+        'female': _consolidate_ranks('F'),
+        'male': _consolidate_ranks('M'),
+    }
 
 
+def _consolidate_ranks(gender, phase=1):
+    qry = RankCategory.objects.filter(
+        candidate__gender=gender,
+        category__phase=phase) \
+        .values('category__id', 'candidate__id') \
+        .annotate(ave_rank=Avg('rank')) \
+        .order_by('ave_rank') \
+        .values_list('category__name', 'candidate__number', 'ave_rank')
+    ranks = defaultdict(list)
+    for c_id, c_num, arank in qry:
+        ranks[c_id].append({
+            'number': c_num,
+            'rank': arank,
+        })
+    return ranks
 
-def category_ranking(category, gender):
-    pass
+def _rank_scores(gender, phase=1):
+    qry = ScoreCriterion.objects.filter(
+        candidate__gender=gender,
+        criterion__category__phase=phase) \
+        .values('candidate', 'criterion__category', 'judge') \
+        .annotate(wscore=Sum('weighted_score')) \
+        .values_list("candidate__id",
+                     "criterion__category__id",
+                     "wscore",
+                     "judge__id")
+
+    ranks = defaultdict(list)
+
+    for (candidate_id, category_id, wscore, judge_id) in qry:
+        rc = RankCategory()
+        rc.candidate_id = candidate_id
+        rc.category_id = category_id
+        rc.judge_id = judge_id
+        rc.score = wscore
+
+        idx = len(ranks[category_id])
+        if idx == 0:
+            rc.rank = 1
+        else:
+            prev_rank = ranks[category_id][idx - 1].rank
+            if ranks[category_id][idx - 1].score == rc.score:
+                rc.rank = prev_rank
+            else:
+                rc.rank = prev_rank + 1
+
+        ranks[category_id].append(rc)
+
+    for k in ranks.keys():
+        RankCategory.objects.bulk_create(ranks[k])
+
 
 def get_ranking_data(gender, phase):
     qry = ScoreCriterion.objects.filter(candidate__gender=gender,
@@ -257,8 +310,8 @@ def get_ranking_data(gender, phase):
 
 
 # todo:  change this such that it will create ranking per judge
+#   update: remove this code:
 def create_ranking(gender):
-
     categories = Category.objects.filter(phase=1) \
         .values_list("name", flat=True) \
         .order_by('sequence')
@@ -292,4 +345,3 @@ def create_ranking(gender):
 # query to get all scores group per category, judge, candidate
 #
 # qry = ScoreCriterion.objects.filter(candidate__gender=gender, criterion__category__phase=phase).values('candidate', 'criterion__category', 'judge').annotate(wscore=Sum('weighted_score')).order_by('-wscore').values('criterion__category__name', 'candidate__name', 'score','judge__first_name', 'judge__last_name', 'judge__username')
-
