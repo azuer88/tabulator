@@ -10,7 +10,7 @@ from django.contrib.auth import logout, authenticate, login
 from django.core.urlresolvers import reverse
 
 from .models import Category, Criterion, Candidate, ScoreCriterion
-from .models import consolidate_ranks
+from .models import consolidate_ranks, consolidate_scores
 
 from django.conf import settings
 
@@ -189,3 +189,21 @@ def minor_awards(request):
         'colw': colw,
     }
     return render(request, 'ranks.html', context=context)
+
+@staff_member_required
+def rank_candidates(request):
+    m = consolidate_scores()
+    context = {
+        'ranks': m,
+        'title': 'List of Finalists'
+    }
+    return render(request, 'ranks_overall.html', context=context)
+
+@staff_member_required
+def rank_finalists(request):
+    m = consolidate_scores(phase=2)
+    context = {
+        'ranks': m,
+        'title': 'List of Winners'
+    }
+    return render(request, 'ranks_overall.html', context=context)

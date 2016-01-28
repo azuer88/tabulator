@@ -314,7 +314,7 @@ def _consolidate_ranks(gender, phase=1):
 def consolidate_scores(phase=1):
     female = _consolidate_scores('F', phase)
     male = _consolidate_scores('M', phase)
-    return {'female': female, 'male': male}
+    return OrderedDict([('female',female), ('male',male)])
 
 def _consolidate_scores(gender, phase=1):
     qry = ScoreCriterion.objects.filter(
@@ -323,7 +323,7 @@ def _consolidate_scores(gender, phase=1):
         .values('criterion__category', 'candidate', 'judge')\
         .annotate(wscore=Sum('weighted_score'))\
         .order_by("-wscore")\
-        .values_list("candidate__id",
+        .values_list("candidate__number",
                      "criterion__category__id",
                      "criterion__category__weight",
                      "wscore",
@@ -379,7 +379,7 @@ def _consolidate_scores(gender, phase=1):
     for k in final_ranks.keys():
         rank = decimal.Decimal(sum(final_ranks[k]))/decimal.Decimal(len(final_ranks[k]))
         final.append({
-            'candidate_id': k,
+            'number': k,
             'rank': rank,
         })
     final.sort(key=itemgetter('rank'))
