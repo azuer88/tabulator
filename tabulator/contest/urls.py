@@ -10,5 +10,6 @@ urlpatterns = [
     url(r'logout/$', 'contest.views.logout_view', name='contest-logout'),
     url(r'setscore/$', 'contest.views.set_score', name='contest-score-set'),
     url(r'getscore/$', 'contest.views.get_score', name='contest-score-get'),
+    url(r'minor/$', 'contest.views.minor_awards', name='contest-minor'),
     #url(r'', ContestView.as_view()),
 ]

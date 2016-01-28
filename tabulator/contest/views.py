@@ -10,6 +10,8 @@ from django.contrib.auth import logout, authenticate, login
 from django.core.urlresolvers import reverse
 
 from .models import Category, Criterion, Candidate, ScoreCriterion
+from .models import consolidate_ranks
+
 from django.conf import settings
 
 # Create your views here.
@@ -140,3 +142,10 @@ def get_score(request):
     result['message'] = 'OK'
     return JsonResponse(result)
 
+def minor_awards(request):
+    m = consolidate_ranks()
+
+    context = {
+        'ranks': m,
+    }
+    return render(request, 'ranks.html', context=context)
