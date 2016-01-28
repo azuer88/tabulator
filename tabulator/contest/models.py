@@ -218,13 +218,18 @@ class ScoreCategory(models.Model):
 
 
 def populate_scores():
+    _populate_scores(1, 100)
+    _populate_scores(2, 0)
+
+
+def _populate_scores(phase, score):
     import time
     start_time = time.time()
     # delete all previous scores
-    ScoreCriterion.objects.all().delete()
+    ScoreCriterion.objects.filter(criterion__category__phase=phase).delete()
 
     candidates = Candidate.objects.all()
-    categories = Category.visibles.all()
+    categories = Category.visibles.filter(phase=phase)
     judges = User.objects.filter(is_active=True, is_staff=False)
 
     count = 0
@@ -240,8 +245,8 @@ def populate_scores():
                             candidate=candidate,
                             criterion=criterion,
                             judge=judge,
-                            score=100,
-                            weighted_score=weight,
+                            score=score,
+                            weighted_score=weight*score,
                         )
                     )
                     count += 1
@@ -299,13 +304,7 @@ def _consolidate_scores(gender, phase=1):
                      "judge__id")
 
     scores = []
-    for score in qry:
-        candidate_id = score["candidate__id"]
-        category_id = score["criterion__category__id"]
-        judge_id = score["judge__id"]
-        weight = score["criterion__category_weight"]
-        w_score = score["wscore"]
-
+    for (candidate_id, category_id, weight, w_score, judge_id) in qry:
         scores.append({
             'category_id': category_id,
             'candidate_id': candidate_id,
@@ -316,21 +315,50 @@ def _consolidate_scores(gender, phase=1):
     scores.sort(key=itemgetter('judge_id', 'candidate_id', 'category_id'))
 
     total_scores = defaultdict(list)
-    for jud_id, can_id, cat_id, items in groupby(scores, key=itemgetter('category_id')):
-        total = 0.0
+    for (jud_id, can_id), items in groupby(scores, key=itemgetter('judge_id', 'candidate_id')):
+        total = decimal.Decimal(0.0)
         for elem in items:
             total += elem['score']
-        total /= 100.00
+        total /= decimal.Decimal(100.00)
 
         total_scores[jud_id].append({
             'candidate_id': can_id,
             'score': total,
+            'rank': 1,
         })
 
 
     for k in total_scores.keys():
         total_scores[k].sort(key=itemgetter('score'), reverse=True)
-        
+
+        for idx, member in enumerate(total_scores[k]):
+            if idx == 0:
+                continue
+            prev_rank = total_scores[k][idx-1]['rank']
+            prev_score = total_scores[k][idx-1]['score']
+            cur_score = member['score']
+            if cur_score < prev_score:
+                member['rank'] = prev_rank + 1
+            else:
+                member['rank'] = prev_rank
+
+    final_ranks = defaultdict(list)
+    for k in total_scores.keys():
+        for item in total_scores[k]:
+            candidate_id = item['candidate_id']
+            rank = item['rank']
+            final_ranks[candidate_id].append(rank)
+
+    final = []
+    for k in final_ranks.keys():
+        rank = decimal.Decimal(sum(final_ranks[k]))/decimal.Decimal(len(final_ranks[k]))
+        final.append({
+            'candidate_id': k,
+            'rank': rank,
+        })
+    final.sort(key=itemgetter('rank'))
+
+    return scores, total_scores, final
 
 
 def _rank_scores(gender, phase=1):
