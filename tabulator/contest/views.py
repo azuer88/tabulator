@@ -81,7 +81,7 @@ def get_candidate(request, candidate_id):
 @login_required
 def index(request):
     #context = RequestContext(request)
-    template_name = "bootstrap.html"
+    template_name = "elimination.html"
     category = Category.objects.first()
     criteria = category.criterion_set.all()
 
@@ -144,8 +144,9 @@ def get_score(request):
 
 def minor_awards(request):
     m = consolidate_ranks()
-
+    colw = 12 / len(m['female'].keys())
     context = {
         'ranks': m,
+        'colw': colw,
     }
     return render(request, 'ranks.html', context=context)

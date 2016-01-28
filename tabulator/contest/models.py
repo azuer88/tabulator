@@ -259,7 +259,7 @@ def _consolidate_ranks(gender, phase=1):
             'number': c_num,
             'rank': arank,
         })
-    return ranks
+    return dict(ranks)
 
 def _rank_scores(gender, phase=1):
     qry = ScoreCriterion.objects.filter(
