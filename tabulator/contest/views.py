@@ -38,18 +38,18 @@ def test_form(request):
     return render(request, "testform.html", context=context)
 
 @login_required
-def get_candidate(request, candidate_id):
+def get_candidate(request, candidate_id, phase):
     from django.contrib.auth.models import User
     # candidate = get_object_or_404(Candidate, pk=candidate_id)
     candidate = Candidate.objects.get(pk=candidate_id)
-    categories = Category.visibles.filter(phase=1).order_by('sequence')
+    categories = Category.visibles.filter(phase=phase).order_by('sequence')
 
     scores = ScoreCriterion.objects.filter(
         candidate=candidate,
         # judge=request.user,
         judge=User.objects.get(username='judge1'),
         criterion__category__is_visible=True,
-        criterion__category__phase=1,
+        criterion__category__phase=phase,
     ).order_by('candidate', 'judge', 'criterion__category__sequence') \
       .values('criterion__category__id', 'criterion__category__name', 'criterion__id', 'criterion__name', 'score')
     data = []
@@ -100,6 +100,31 @@ def index(request):
     }
 
     return render(request, template_name, context=context)
+
+
+@login_required
+def finals(request):
+    #context = RequestContext(request)
+    template_name = "finals.html"
+    category = Category.objects.first()
+    criteria = category.criterion_set.all()
+
+
+    male_ids = Candidate.males.order_by('number').values_list('id', 'number', flat=False)
+    female_ids = Candidate.females.order_by('number').values_list('id', 'number', flat=False)
+    first = female_ids[0][0]
+
+    context = {
+            'app_title': settings.APP_TITLE,
+            'criteria': criteria,
+            'category': category.name,
+            'males': male_ids,
+            'females': female_ids,
+            'first': first,
+    }
+
+    return render(request, template_name, context=context)
+
 
 def logout_view(request):
     logout(request)

@@ -48,11 +48,11 @@
                         <ul class="dropdown-menu">
                             <li class=""dropdown-header">Female Candidates:</li>
                             {% for id, num in females %}
-                            <li><a class="candidate_link" href="{% url 'get-candidate' candidate_id=id %}">Candidate {{ num }}</a></li>
+                            <li><a class="candidate_link" href="{% url 'get-candidate' candidate_id=id phase=1 %}">Candidate {{ num }}</a></li>
                             {% endfor %}
                             <li class=""dropdown-header">Male Candidates:</li>
                             {% for id, num in males %}
-                            <li><a class="candidate_link" href="{% url 'get-candidate' candidate_id=id %}">Candidate {{ num }}</a></li>
+                            <li><a class="candidate_link" href="{% url 'get-candidate' candidate_id=id phase=1%}">Candidate {{ num }}</a></li>
                             {% endfor %}
                     <!--
                             <li><a href="#">Action</a></li>
@@ -96,7 +96,7 @@
 <!-- url: http://localhost:8000/api/v1/candidate/?number=1&gender=M -->
 <script type = "text/javascript" language = "javascript">
         $(document).ready(function() {
-            $('#jumbotron').load('{% url "get-candidate" first %}');
+            $('#jumbotron').load('{% url "get-candidate" first 1 %}');
         });
 </script>
 </body>
