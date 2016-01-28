@@ -268,6 +268,27 @@ def consolidate_ranks():
         'male': _consolidate_ranks('M'),
     }
 
+def set_candidate_active(ids, active=True):
+    if ids is None:
+        qry = Candidate.objects.all()
+    else:
+        if isinstance(ids, list):
+            qry = Candidate.objects.filter(pk__in=ids)
+        else:
+            qry = Candidate.objects.filter(pk=ids)
+    qry.update(is_active=active)
+
+def reset_candidates():
+    set_candidate_active(None)
+
+
+def eliminate_candidates(num_to_elim=4):
+    ranking = consolidate_scores()
+    ids = [item["candidate_id"] for item in ranking['female'][-num_to_elim:]]
+    ids.extend([item["candidate_id"] for item in ranking['male'][-num_to_elim:]])
+
+    set_candidate_active(ids, False)
+    return ids
 
 def _consolidate_ranks(gender, phase=1):
     qry = RankCategory.objects.filter(
@@ -289,6 +310,11 @@ def _consolidate_ranks(gender, phase=1):
             'rank': arank,
         })
     return dict(ranks)
+
+def consolidate_scores(phase=1):
+    female = _consolidate_scores('F', phase)
+    male = _consolidate_scores('M', phase)
+    return {'female': female, 'male': male}
 
 def _consolidate_scores(gender, phase=1):
     qry = ScoreCriterion.objects.filter(
@@ -358,7 +384,7 @@ def _consolidate_scores(gender, phase=1):
         })
     final.sort(key=itemgetter('rank'))
 
-    return scores, total_scores, final
+    return final
 
 
 def _rank_scores(gender, phase=1):
