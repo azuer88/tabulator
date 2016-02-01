@@ -282,10 +282,10 @@ def reset_candidates():
     set_candidate_active(None)
 
 
-def eliminate_candidates(num_to_elim=4):
+def eliminate_candidates(num_to_elim=3):
     ranking = consolidate_scores()
-    ids = [item["candidate_id"] for item in ranking['female'][-num_to_elim:]]
-    ids.extend([item["candidate_id"] for item in ranking['male'][-num_to_elim:]])
+    ids = [item["number"] for item in ranking['female'][-num_to_elim:]]
+    ids.extend([item["number"] for item in ranking['male'][-num_to_elim:]])
 
     set_candidate_active(ids, False)
     return ids
@@ -319,7 +319,8 @@ def consolidate_scores(phase=1):
 def _consolidate_scores(gender, phase=1):
     qry = ScoreCriterion.objects.filter(
         candidate__gender=gender,
-        criterion__category__phase=phase)\
+        criterion__category__phase=phase,
+        candidate__is_active=True)\
         .values('criterion__category', 'candidate', 'judge')\
         .annotate(wscore=Sum('weighted_score'))\
         .order_by("-wscore")\
