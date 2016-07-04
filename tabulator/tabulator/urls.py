@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.http import HttpResponseRedirect
 
 # serve static files during development
 from django.conf import settings
@@ -26,10 +27,15 @@ from contest.api import CandidateResource, ScoreResource
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-] 
+]
 
 urlpatterns.append(
     url(r'^contest/', include('contest.urls')),
+)
+
+# redirect to contest if url is blank
+urlpatterns.append(
+    url(r'^$', lambda r: HttpResponseRedirect('contest/')),
 )
 
 # add resources' urls
